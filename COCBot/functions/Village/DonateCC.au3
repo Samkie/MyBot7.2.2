@@ -84,7 +84,7 @@ Func DonateCC($Check = False)
 	EndIf
 
 	;Opens clan tab and verbose in log
-	ClickP($aAway, 1, 0, "#0167") ;Click Away
+	ClickP($aAway, 1, 0, "#D01") ;Click Away
 	Setlog("Checking for Donate Requests in Clan Chat", $COLOR_INFO)
 
 	ForceCaptureRegion()
@@ -543,7 +543,7 @@ Func DonateCC($Check = False)
 
 			$bDonate = True
 			$y = $g_aiDonatePixel[1] + 50
-			ClickP($aAway, 1, 0, "#0171")
+			ClickP($aAway, 1, 0, "#D02")
 			If _Sleep($DELAYDONATECC2) Then ExitLoop
 		EndIf
 		;ck for more donate buttons
@@ -574,7 +574,7 @@ Func DonateCC($Check = False)
 		SetLog(_PadStringCenter(" Donate End ", 54, "="), $COLOR_INFO)
 	WEnd
 
-	ClickP($aAway, 1, 0, "#0176") ; click away any possible open window
+	ClickP($aAway, 1, 0, "#D03") ; click away any possible open window
 	If _Sleep($DELAYDONATECC2) Then Return
 
 	$i = 0
@@ -1031,7 +1031,7 @@ Func DonateWindow($Open = True)
 	If $g_iDebugSetlog = 1 And $Open = False Then Setlog("DonateWindow Close Start", $COLOR_DEBUG)
 
 	If $Open = False Then ; close window and exit
-		ClickP($aAway, 1, 0, "#0176")
+		ClickP($aAway, 1, 0, "#D04")
 		If _Sleep($DELAYDONATEWINDOW1) Then Return
 		If $g_iDebugSetlog = 1 Then Setlog("DonateWindow Close Exit", $COLOR_DEBUG)
 		Return
@@ -1059,12 +1059,17 @@ Func DonateWindow($Open = True)
 		Local $g_aiDonatePixelCheck = _MultiPixelSearch($iLeft, $iTop, $iRight, $iBottom, 50, 1, Hex(0x98D057, 6), $aChatDonateBtnColors, 15)
 		If IsArray($g_aiDonatePixelCheck) Then
 			Click($g_aiDonatePixel[0] + 50, $g_aiDonatePixel[1] + 10, 1, 0, "#0174")
+			If WaitforPixel(331, $g_aiDonatePixel[1], 332, $g_aiDonatePixel[1] + 1, Hex(0xFFFFFF, 6), 6, 20) Then
+				ExitLoop
+			EndIf
 		Else
 			If $g_iDebugSetlog = 1 Then SetLog("Could not find the Donate Button!", $COLOR_DEBUG)
 		EndIf
-		If _Sleep(500) Then Return
-		If _ColorCheck(_GetPixelColor(331, $g_aiDonatePixel[1], True, "DonateWindow"), Hex(0xffffff, 6), 0) Then ExitLoop
-		ClickP($aAway, 1, 0, "#0176")
+		;If _Sleep(500) Then Return
+		;ForceCaptureRegion()
+		;If _ColorCheck(_GetPixelColor(331, $g_aiDonatePixel[1], True, "DonateWindow"), Hex(0xffffff, 6), 0) Then ExitLoop
+		ClickP($aAway, 1, 0, "#D05")
+		If _Sleep($DELAYDONATEWINDOW1) Then Return
 		$icount += 1
 	WEnd
 	If $icount >= 8 Then
