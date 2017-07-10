@@ -1,3 +1,16 @@
+; #FUNCTION# ====================================================================================================================
+; Name ..........: FriendlyChallenge
+; Description ...:
+; Syntax ........: FriendlyChallenge()
+; Parameters ....:
+; Return values .:
+; Author ........: Samkie (11 July, 2017)
+; Modified ......:
+; Remarks .......:
+; Related .......:
+; Link ..........: https://github.com/MyBotRun/MyBot/wiki
+; Example .......: No
+; ===============================================================================================================================
 Global $chkEnableFriendlyChallenge, $ichkEnableFriendlyChallenge, $chkOnlyOnRequest, $ichkOnlyOnRequest, $txtKeywordForRequest, $stxtKeywordForRequest, $txtFriendlyChallengeCoolDownTime, $itxtFriendlyChallengeCoolDownTime, $txtChallengeText, $stxtChallengeText
 Global $g_ahChkFriendlyChallengehours[24] = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 Global $g_hChkFriendlyChallengehoursE1 = 0, $g_hChkFriendlyChallengehoursE2 = 0

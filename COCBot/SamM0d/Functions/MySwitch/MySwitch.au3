@@ -4,7 +4,7 @@
 ; Syntax ........:getNextSwitchList()
 ; Parameters ....:
 ; Return values .: None
-; Author ........: Samkie (21 JUN, 2017)
+; Author ........: Samkie (11 July, 2017)
 ; Modified ......:
 ; Remarks .......:
 ; Related .......:
