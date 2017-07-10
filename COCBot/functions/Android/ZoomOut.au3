@@ -458,10 +458,20 @@ Func SearchZoomOut($CenterVillageBoolOrScrollPos = $aCenterHomeVillageClickDrag,
 				$g_aiSearchZoomOutCounter[0] = 0
 				;CloseCoC(True)
 				SetLog("Restart CoC to reset zoom" & $sSource & "...", $COLOR_INFO)
-				PoliteCloseCoC("Zoomout" & $sSource)
-				If _Sleep(1000) Then Return $aResult
-				CloseCoC() ; ensure CoC is gone
-				OpenCoC()
+				; samm0d
+				If $g_iFailedToZoomOutCount > 3 Then
+					$g_iFailedToZoomOutCount = 0
+					Local $_NoFocusTampering = $g_bNoFocusTampering
+					$g_bNoFocusTampering = True
+					RebootAndroid()
+					$g_bNoFocusTampering = $_NoFocusTampering
+				Else
+					$g_iFailedToZoomOutCount += 1
+					PoliteCloseCoC("Zoomout" & $sSource)
+					If _Sleep(1000) Then Return $aResult
+					CloseCoC() ; ensure CoC is gone
+					OpenCoC()
+				EndIf
 				Return SearchZoomOut()
 			Else
 				$g_aiSearchZoomOutCounter[0] += 1

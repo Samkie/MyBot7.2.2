@@ -110,6 +110,10 @@ Func DropTroopFromINI($vectors, $indexStart, $indexEnd, $indexArray, $qtaMin, $q
 			If $g_abAttackUseSkeletonSpell[$g_iMatchMode] = False Then $usespell = False
 	EndSwitch
 
+	; CVSDeploy Speed Mod
+   If $delayPointmin = 0 Then $delayPointmin = 100
+   If $delayPointmax = 0 Then $delayPointmax = 300
+
 	If $troopPosition = -1 Or $usespell = False Then
 		If $usespell = True Then
 			Setlog("No troop found in your attack troops list")
@@ -163,6 +167,11 @@ Func DropTroopFromINI($vectors, $indexStart, $indexEnd, $indexArray, $qtaMin, $q
 					Else
 						Local $delayPoint = $delayPointmin
 					EndIf
+
+
+					; CSV Deployment Speed Mod
+					$delayPoint = $delayPoint / $iCSVSpeeds[$isldSelectedCSVSpeed[$g_iMatchMode]]
+					$delayDropLast = $delayDropLast / $iCSVSpeeds[$isldSelectedCSVSpeed[$g_iMatchMode]]
 
 					Switch $iTroopIndex
 						Case $eBarb To $eBowl ; drop normal troops

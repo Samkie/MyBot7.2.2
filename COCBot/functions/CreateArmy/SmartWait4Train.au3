@@ -82,6 +82,11 @@ Func SmartWait4Train()
 	EndIf
 	If $g_iDebugSetlogTrain = 1 Or $g_iDebugSetlog = 1 And IsArray($g_asShieldStatus) Then Setlog("Shield Status:" & $g_asShieldStatus[0] & ", till " & $g_asShieldStatus[2], $COLOR_DEBUG)
 
+	;====samm0d======
+	;avoid click train windows if we don't need close game or emulator without shield
+	If $g_asShieldStatus[0] = "none" And $g_bCloseWithoutShield = False Then Return ; skip if not on shield and other options not selected
+	;================
+
 	Local $result = OpenArmyWindow() ; Open train overview
 	If $result = False Then
 		If $g_iDebugImageSave = 1 Or $g_iDebugSetlogTrain = 1 Then Debugimagesave("SmartWait4Troop2_")

@@ -170,6 +170,7 @@ Func GetVillageSize($DebugLog = False, $sStonePrefix = Default, $sTreePrefix = "
 	$aResult[7] = $tree[0]
 	$aResult[8] = $tree[1]
 	$aResult[9] = $tree[5]
+
 	Return $aResult
 EndFunc   ;==>GetVillageSize
 

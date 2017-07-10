@@ -90,6 +90,7 @@ Func DropTrophy()
 				SetLog("Dropping Trophies to " & $g_iDropTrophyMin, $COLOR_INFO)
 				If _Sleep($DELAYDROPTROPHY4) Then ExitLoop
 				$bDropSuccessful = True
+
 				ZoomOut()
 				PrepareSearch()
 				If $g_bOutOfGold = True Then Return ; Check flag for enough gold to search

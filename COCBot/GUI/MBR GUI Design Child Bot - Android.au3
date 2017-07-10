@@ -25,6 +25,9 @@ Func CreateBotAndroid()
 	   LoadCOCDistributorsComboBox()
 	   SetCurSelCmbCOCDistributors()
 	   GUICtrlSetOnEvent(-1, "cmbCOCDistributors")
+		; samm0d
+	   CreatLocateAdBtn($x + 200, $y)
+
    GUICtrlCreateGroup("", -99, -99, 1, 1)
 
    $y += $h + 5

@@ -42,6 +42,8 @@ Func _checkObstacles() ;Checks if something is in the way for mainscreen
 	If checkObstacles_Network() Then Return True
 
 	If $g_sAndroidGameDistributor <> $g_sGoogle Then ; close an ads window for non google apks
+		; samm0d - close Advertising window
+		CloseAd()
 		Local $aXButton = FindAdsXButton()
 		If IsArray($aXButton) Then
 			SetDebugLog("checkObstacles: Found " & $g_sAndroidGameDistributor & " ADS X button to close")
@@ -184,6 +186,54 @@ Func _checkObstacles() ;Checks if something is in the way for mainscreen
 		; CoC not running
 		Return checkObstacles_ReloadCoC()
 	EndIf
+
+	;samm0d for my switch problem prevention
+	;=======================================
+	If _ColorCheck(_GetPixelColor(160, 380,$g_bNoCapturePixel), Hex(0xFFFFFF, 6),5) And _ColorCheck(_GetPixelColor(699, 380,$g_bNoCapturePixel), Hex(0xFFFFFF, 6),5) Then
+		AndroidBackButton()
+		$g_bMinorObstacle = True
+		If _Sleep(1000) Then Return
+		Return False
+	EndIf
+
+	If $ichkProfileImage = 0 Then
+		If _ColorCheck(_GetPixelColor($aButtonVillageCancel[4], $aButtonVillageCancel[5],$g_bNoCapturePixel), Hex($aButtonVillageCancel[6], 6), $aButtonVillageCancel[7]) And _
+			_ColorCheck(_GetPixelColor($aButtonVillageLoad[4], $aButtonVillageLoad[5],$g_bNoCapturePixel), Hex($aButtonVillageLoad[6], 6), $aButtonVillageLoad[7]) Then
+			Click($aButtonVillageCancel[0],$aButtonVillageCancel[1],1,0,"#VL01")
+			$g_bMinorObstacle = True
+			If _Sleep(500) Then Return
+			Return False
+		EndIf
+	EndIf
+
+	; KunLun Version un click verify for real name
+;~ 	If _ColorCheck(_GetPixelColor(550, 400,$g_bNoCapturePixel), Hex(0xFFBB34, 6),5) And _ColorCheck(_GetPixelColor(450, 400,$g_bNoCapturePixel), Hex(0xFFBB34, 6),5) And _
+;~ 	_ColorCheck(_GetPixelColor(310, 400,$g_bNoCapturePixel), Hex(0xFFFFFF, 6),5) And _ColorCheck(_GetPixelColor(400, 400,$g_bNoCapturePixel), Hex(0xFFFFFF, 6),5) Then
+;~ 		Click(Random(340,380,1),Random(400,415,1),1,0,"#KUNC")
+;~ 		$g_bMinorObstacle = True
+;~ 		If _Sleep(500) Then Return
+;~ 		Return False
+;~ 	EndIf
+
+	; prevent close train page failed, and get builder failed
+	If _CheckPixel($aIsTrainPgChk1, $g_bNoCapturePixel) Then
+		AndroidBackButton()
+		$g_bMinorObstacle = True
+		If _Sleep(1000) Then Return
+		Return False
+	EndIf
+;~ 	For $i = 1 To 7
+;~ 		Local $tempButton = Eval("aButtonClose" & $i)
+;~ 		If _ColorCheck(_GetPixelColor($tempButton[4], $tempButton[5], $g_bNoCapturePixel), Hex($tempButton[6], 6), Number($tempButton[7])) Then
+;~ 			Local $x1, $y1
+;~ 			HMLClickPR($tempButton,$x1,$y1)
+;~ 			HMLPureClick($x1, $y1)
+;~ 			If _Sleep($iDelaycheckObstacles1) Then Return
+;~ 			Return False
+;~ 		EndIf
+;~ 	Next
+	;=============================
+
 	Local $bHasTopBlackBar = _ColorCheck(_GetPixelColor(10, 3), Hex(0x000000, 6), 1) And _ColorCheck(_GetPixelColor(300, 6), Hex(0x000000, 6), 1) And _ColorCheck(_GetPixelColor(600, 9), Hex(0x000000, 6), 1)
 	If _ColorCheck(_GetPixelColor(235, 209 + $g_iMidOffsetY), Hex(0x9E3826, 6), 20) Then
 		SetDebugLog("checkObstacles: Found Window to close")

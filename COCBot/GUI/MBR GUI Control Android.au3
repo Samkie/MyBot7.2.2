@@ -62,6 +62,7 @@ Func cmbCOCDistributors()
 			$g_sAndroidGameClass = GetCOCClass($sDistributor)
 		EndIf ; else existing one (no emulator bot startup compatible), if wrong ini info either kept or replaced by cursel when saveconfig, not fall back to google
 	EndIf
+	readADConfig()
 EndFunc   ;==>cmbCOCDistributors
 
 Func DistributorsBotStopEvent()

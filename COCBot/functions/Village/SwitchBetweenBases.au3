@@ -39,21 +39,32 @@ Func SwitchBetweenBases()
 
 		If $bIsOnBuilderBase Then
 			If _Sleep($DELAYSWITCHBASES2) Then Return
-
-			If isOnBuilderIsland(True) Then
-				SetLog("Failed to go back to the normal Village!", $COLOR_ERROR)
-			Else
+			Local $iCount = 0
+			While isOnBuilderIsland(True)
+				If _Sleep(1000) Then Return
+				$iCount += 1
+				If $iCount > 3 Then ExitLoop
+			WEnd
+			If $iCount < 4 Then
 				SetLog("Successfully went back to the normal Village!", $COLOR_SUCCESS)
 				checkMainScreen(True, False)
 				Return True
+			Else
+				SetLog("Failed to go back to the normal Village!", $COLOR_ERROR)
 			EndIf
 		Else
-			If Not isOnBuilderIsland(True) Then
-				SetLog("Failed to go to the Builder Base!", $COLOR_ERROR)
-			Else
+			Local $iCount = 0
+			While Not isOnBuilderIsland(True)
+				If _Sleep(1000) Then Return
+				$iCount += 1
+				If $iCount > 3 Then ExitLoop
+			WEnd
+			If $iCount < 4 Then
 				SetLog("Successfully went to the Builder Base!", $COLOR_SUCCESS)
 				checkMainScreen(True, True)
 				Return True
+			Else
+				SetLog("Failed to go to the Builder Base!", $COLOR_ERROR)
 			EndIf
 		EndIf
 	Else

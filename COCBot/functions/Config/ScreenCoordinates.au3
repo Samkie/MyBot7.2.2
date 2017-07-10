@@ -15,7 +15,9 @@ Global $aCenterEnemyVillageClickDrag = [65, 545] ; Scroll village using this loc
 Global $aCenterHomeVillageClickDrag = [160, 665] ; Scroll village using this location in the water
 Global $aIsReloadError[4] = [457, 301 + $g_iMidOffsetY, 0x33B5E5, 10] ; Pixel Search Check point For All Reload Button errors, except break ending
 ;Global $aIsMain[4] = [284, 28, 0x41B1CD, 20] ; Main Screen, Builder Left Eye
-Global $aIsMain[4] = [284, 29, 0x1C4466, 20] ; Main Screen, Builder Left Eye :SC_okt
+;Global $aIsMain[4] = [284, 29, 0x1C4466, 20] ; Main Screen, Builder Left Eye :SC_okt
+;~ ; samm0d - tolerance 20 change to 6
+Global $aIsMain[4] = [284, 29, 0x1C4466, 6] ; Main Screen, Builder Left Eye :SC_okt
 
 Global $aIsDPI125[4] = [355, 35, 0x399CB8, 15] ; Main Screen, Builder Left Eye, DPI set to 125%
 Global $aIsDPI150[4] = [426, 42, 0x348FAA, 15] ; Main Screen, Builder Left Eye, DPI set to 150%
