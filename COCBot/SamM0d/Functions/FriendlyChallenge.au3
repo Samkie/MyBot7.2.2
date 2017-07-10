@@ -9,8 +9,6 @@ Global $g_abFriendlyChallengehours[24] = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 Global $chkFriendlyChallengeBase[6], $ichkFriendlyChallengeBase[6]
 Global $iTimeForLastShareFriendlyChallenge = 0
 
-Global Const $iDelayFCClick = 500
-
 Func SetupFriendlyChallengeGUI($x, $y)
 	Local $xStart = $x
 	Local $yStart = $y
@@ -307,31 +305,35 @@ Func FriendlyChallenge()
 	Setlog("Checking Friendly Challenge at Clan Chat", $COLOR_INFO)
 
 	ForceCaptureRegion()
-	If Not _CheckPixel($aChatTab, $g_bCapturePixel) Or Not _CheckPixel($aChatTab2, $g_bCapturePixel) Or Not _CheckPixel($aChatTab3, $g_bCapturePixel) Then ClickP($aOpenChat, 1, 0, "#0168") ; Clicks chat tab
-	If _Sleep($DELAYDONATECC4) Then Return
+	If _CheckColorPixel($aButtonClanWindowOpen[4], $aButtonClanWindowOpen[5], $aButtonClanWindowOpen[6], $aButtonClanWindowOpen[7]) Then
+		Click($aButtonClanWindowOpen[0], $aButtonClanWindowOpen[1], 1, 0, "#0168")
+		If _Wait4Pixel($aButtonClanWindowClose[4], $aButtonClanWindowClose[5], $aButtonClanWindowClose[6], $aButtonClanWindowClose[7], 1500) = False Then
+			SetLog("Clan Chat Did Not Open - Abandon Friendly Challenge")
+			AndroidPageError("FriendlyChallenge")
+			Return False
+		EndIf
+	EndIf
 
 	Local $iLoopCount = 0
 	Local $iCount = 0
 	While 1
 		;If Clan tab is selected.
-		If _ColorCheck(_GetPixelColor(189, 24, True), Hex(0x706C50, 6), 20) Then ; color med gray
-			;If _Sleep(200) Then Return ;small delay to allow tab to completely open
-			;Clan tab already Selected no click needed
-			;ClickP($aClanTab, 1, 0, "#0169") ; clicking clan tab
+		ForceCaptureRegion()
+		_CaptureRegion()
+		If _ColorCheck(_GetPixelColor(189, 24, False), Hex(0x706C50, 6), 20) Then ; color med gray
 			ExitLoop
 		EndIf
 		;If Global tab is selected.
-		If _ColorCheck(_GetPixelColor(189, 24, True), Hex(0x383828, 6), 20) Then ; Darker gray
-			If _Sleep($DELAYDONATECC1) Then Return ;small delay to allow tab to completely open
+		If _ColorCheck(_GetPixelColor(189, 24, False), Hex(0x383828, 6), 20) Then ; Darker gray
 			ClickP($aClanTab, 1, 0, "#0169") ; clicking clan tab
-			ExitLoop
 		EndIf
 		;counter for time approx 3 sec max allowed for tab to open
 		$iLoopCount += 1
-		If $iLoopCount >= 15 Then ; allows for up to a sleep of 3000
-			SetLog("Clan Chat Did Not Open - Abandon Friendly Challenge")
+		If $iLoopCount >= 5 Then ; allows for up to a sleep of 3000
+			SetLog("Cannot switch to Clan Chat Tab - Abandon Friendly Challenge")
 			AndroidPageError("FriendlyChallenge")
-			Return
+			ClostChatTab()
+			Return False
 		EndIf
 		If _Sleep($DELAYDONATECC1) Then Return ; delay Allow 15x
 	WEnd
@@ -491,163 +493,113 @@ Func FriendlyChallenge()
 	EndIf
 
 	If $bDoFriendlyChallenge Then
-
-	SetLog("Prepare for select base: " & $iBaseForShare + 1, $COLOR_INFO)
-
-	; check friendly challenge button available
-	If _ColorCheck(_GetPixelColor($aButtonFriendlyChallenge[4], $aButtonFriendlyChallenge[5], True), Hex($aButtonFriendlyChallenge[6], 6), $aButtonFriendlyChallenge[7]) Then
-		Click($aButtonFriendlyChallenge[4], $aButtonFriendlyChallenge[5], 1, 0, "#BtnFC")
-		;If _Sleep($iDelayFCClick) Then Return False
-		$iCount = 0
-		While Not _ColorCheck(_GetPixelColor($aButtonFCChangeLayout[4], $aButtonFCChangeLayout[5],True), Hex($aButtonFCChangeLayout[6],6), $aButtonFCChangeLayout[7])
-			If $g_iSamM0dDebug Then SetLog("Change layout button Color: " & _GetPixelColor($aButtonFCChangeLayout[4], $aButtonFCChangeLayout[5],True))
-			$iCount += 1
-			If $iCount > 8 Then
-				SetLog("Cannot find change layout button.", $COLOR_RED)
-				ClostChatTab()
-				Return False
-			EndIf
-			If _Sleep(250) Then Return False
-		WEnd
-		Click($aButtonFCChangeLayout[4], $aButtonFCChangeLayout[5], 1, 0, "#BtnFCCL")
-		;If _Sleep($iDelayFCClick) Then Return False
-		If $g_iSamM0dDebug Then SetLog("Waiting back button", $COLOR_DEBUG)
-		$iCount = 0
-		While Not _ColorCheck(_GetPixelColor($aButtonFCBack[4], $aButtonFCBack[5],True), Hex($aButtonFCBack[6],6), $aButtonFCBack[7])
-			If $g_iSamM0dDebug Then SetLog("Change layout back button Color: " & _GetPixelColor($aButtonFCBack[4], $aButtonFCBack[5],True))
-			$iCount += 1
-			If $iCount > 8 Then
-				SetLog("Cannot find change layout back button.", $COLOR_RED)
-				Click($aButtonFCClose[4], $aButtonFCClose[5], 1, 0, "#BtnClose")
-				ClostChatTab()
-				Return False
-			EndIf
-			If _Sleep(250) Then Return False
-		WEnd
-		If $g_iSamM0dDebug Then SetLog("CheckNeedSwipeFriendlyChallengeBase", $COLOR_DEBUG)
-		; check need swipe
-		If CheckNeedSwipeFriendlyChallengeBase($iBaseForShare) = False Then
-			SetLog("Cannot click drag to select base: " &  $iBaseForShare + 1, $COLOR_ERROR)
-			Click($aButtonFCBack[4], $aButtonFCBack[5], 1, 0, "#BtnFCBack")
-			If _Sleep($iDelayFCClick) Then Return False
-			Click($aButtonFCClose[4], $aButtonFCClose[5], 1, 0, "#BtnClose")
-			ClostChatTab()
-			Return False
-		EndIf
-
-		If $iBaseForShare > 2 Then $iBaseForShare -= 3
-		Click(Random(200 + ($iBaseForShare * 184), 230 + ($iBaseForShare * 184), 1) , Random(185,200,1))
-
-		;If _Sleep($iDelayFCClick) Then Return False
-		$iCount = 0
-		While Not _ColorCheck(_GetPixelColor($aButtonFCStart[4], $aButtonFCStart[5],True), Hex($aButtonFCStart[6],6), $aButtonFCStart[7])
-			If $g_iSamM0dDebug Then SetLog("friendly challenge start button Color: " & _GetPixelColor($aButtonFCStart[4], $aButtonFCStart[5],True))
-			$iCount += 1
-			If $iCount > 8 Then
-				SetLog("Cannot find friendly challenge start button. Maybe the base cannot be select.", $COLOR_RED)
-				$ichkFriendlyChallengeBase[$iBaseForShare] = 0
-				GUICtrlSetState($chkFriendlyChallengeBase[$iBaseForShare], $GUI_UNCHECKED)
-
-				Click($aButtonFCBack[4], $aButtonFCBack[5], 1, 0, "#BtnFCBack")
-				If _Sleep(250) Then Return False
-				Click($aButtonFCClose[4], $aButtonFCClose[5], 1, 0, "#BtnClose")
-				ClostChatTab()
-				Return False
-			EndIf
-			If _Sleep(250) Then Return False
-		WEnd
-		If $stxtChallengeText <> "" Then
-			Click(Random(440,620,1),Random(120,130,1))
-			If _Sleep(100) Then Return False
-			Local $asText = StringSplit($stxtChallengeText, @CRLF, BitOR($STR_ENTIRESPLIT,$STR_NOCOUNT))
-			If IsArray($asText) Then
-				Local $sText4Send = $asText[Random(0,UBound($asText)-1,1)]
-				SetLog("Send text: " & $sText4Send, $COLOR_DEBUG)
-
-				If $g_bChkBackgroundMode = False And $g_bNoFocusTampering = False Then ControlFocus($g_hAndroidWindow, "", "")
-				If SendText($sText4Send) = 0 Then
-					Setlog(" challenge text entry failed!", $COLOR_ERROR)
+		SetLog("Prepare for select base: " & $iBaseForShare + 1, $COLOR_INFO)
+		If _Wait4Pixel($aButtonFriendlyChallenge[4], $aButtonFriendlyChallenge[5], $aButtonFriendlyChallenge[6], $aButtonFriendlyChallenge[7], 1500) Then
+			Click($aButtonFriendlyChallenge[4], $aButtonFriendlyChallenge[5], 1, 0, "#BtnFC")
+			If _Wait4Pixel($aButtonFCChangeLayout[4], $aButtonFCChangeLayout[5], $aButtonFCChangeLayout[6], $aButtonFCChangeLayout[7], 1500) Then
+				Click($aButtonFCChangeLayout[4], $aButtonFCChangeLayout[5], 1, 0, "#BtnFCCL")
+				If _Wait4Pixel($aButtonFCBack[4], $aButtonFCBack[5], $aButtonFCBack[6], $aButtonFCBack[7], 1500) Then
+					If CheckNeedSwipeFriendlyChallengeBase($iBaseForShare) Then
+						If _Wait4Pixel($aButtonFCStart[4], $aButtonFCStart[5], $aButtonFCStart[6], $aButtonFCStart[7], 1500) Then
+							Local $bIsBtnStartOk = True
+							If $stxtChallengeText <> "" Then
+								Click(Random(440,620,1),Random(120,130,1))
+								If _Sleep(100) Then Return False
+								Local $asText = StringSplit($stxtChallengeText, @CRLF, BitOR($STR_ENTIRESPLIT,$STR_NOCOUNT))
+								If IsArray($asText) Then
+									Local $sText4Send = $asText[Random(0,UBound($asText)-1,1)]
+									SetLog("Send text: " & $sText4Send, $COLOR_DEBUG)
+									If $g_bChkBackgroundMode = False And $g_bNoFocusTampering = False Then ControlFocus($g_hAndroidWindow, "", "")
+									If SendText($sText4Send) = 0 Then
+										Setlog(" challenge text entry failed!", $COLOR_ERROR)
+									EndIf
+								EndIf
+								If Not _Wait4Pixel($aButtonFCStart[4], $aButtonFCStart[5], $aButtonFCStart[6], $aButtonFCStart[7], 1500) Then $bIsBtnStartOk = False
+							EndIf
+							If $bIsBtnStartOk Then
+								Click($aButtonFCStart[4], $aButtonFCStart[5], 1, 0, "#BtnFCStart")
+								SetLog("Friendly Challenge Shared.", $COLOR_INFO)
+								$iTimeForLastShareFriendlyChallenge = _NowCalc()
+								ClostChatTab()
+								Return True
+							EndIf
+						Else
+							SetLog("Cannot find friendly challenge start button. Maybe the base cannot be select.", $COLOR_RED)
+							$ichkFriendlyChallengeBase[$iBaseForShare] = 0
+							GUICtrlSetState($chkFriendlyChallengeBase[$iBaseForShare], $GUI_UNCHECKED)
+						EndIf
+					EndIf
 				EndIf
 			EndIf
-			If _Sleep(100) Then Return False
 		EndIf
-		While Not _ColorCheck(_GetPixelColor($aButtonFCStart[4], $aButtonFCStart[5],True), Hex($aButtonFCStart[6],6), $aButtonFCStart[7])
-			If $g_iSamM0dDebug Then SetLog("friendly challenge start button Color: " & _GetPixelColor($aButtonFCStart[4], $aButtonFCStart[5],True))
-			$iCount += 1
-			If $iCount > 8 Then
-				SetLog("Cannot find friendly challenge start button. Maybe the base cannot be select.", $COLOR_RED)
-				Click($aButtonFCClose[4], $aButtonFCClose[5], 1, 0, "#BtnClose")
-				ClostChatTab()
-				Return False
-			EndIf
-			If _Sleep(250) Then Return False
-		WEnd
-		Click($aButtonFCStart[4], $aButtonFCStart[5], 1, 0, "#BtnFCStart")
-		SetLog("Friendly Challenge Shared.", $COLOR_INFO)
-		$iTimeForLastShareFriendlyChallenge = _NowCalc()
-	EndIf
 	EndIf
 	ClostChatTab()
-	Return True
+	Return False
 EndFunc
 
 Func CheckNeedSwipeFriendlyChallengeBase($iBaseSlot)
 	If _Sleep(100) Then Return False
-	Local $iCount2 = 0
-	While IsQueueBlockByMsg($iCount2) ; 检查游戏上的讯息，是否有挡着训练界面， 最多30秒
-		If _Sleep(1000) Then ExitLoop
-		$iCount2 += 1
-		If $iCount2 >= 30 Then
-			ExitLoop
-		EndIf
-	WEnd
+;~ 	Local $iCount2 = 0
+;~ 	While IsQueueBlockByMsg($iCount2) ; 检查游戏上的讯息，是否有挡着训练界面， 最多30秒
+;~ 		If _Sleep(1000) Then ExitLoop
+;~ 		$iCount2 += 1
+;~ 		If $iCount2 >= 30 Then
+;~ 			ExitLoop
+;~ 		EndIf
+;~ 	WEnd
 
 	; check need swipe
 	Local $iSwipeNum = 2
 	Local $iCount = 0
 	If $iBaseSlot > $iSwipeNum Then
 		$iCount = 0
-		While Not _ColorCheck(_GetPixelColor(711, 150, True), Hex(0XCFD0C9, 6), 10)
+		While Not _ColorCheck(_GetPixelColor(711, 230, True), Hex(0XCFD0C9, 6), 10)
 			ClickDrag(700,150,150,150,250)
 			If _sleep(250) Then Return False
 			$iCount += 1
 			If $iCount > 3 Then Return False
 		WEnd
+		$iBaseSlot -= 3
+		Click(Random(200 + ($iBaseSlot * 184), 230 + ($iBaseSlot * 184), 1) , Random(185,200,1))
 	Else
 		$iCount = 0
-		While Not _ColorCheck(_GetPixelColor(148, 150, True), Hex(0XD1D0C9, 6), 10)
+		While Not _ColorCheck(_GetPixelColor(148, 230, True), Hex(0XD1D0C9, 6), 10)
 			ClickDrag(155,150,705,150,250)
 			If _sleep(250) Then Return False
 			$iCount += 1
 			If $iCount > 3 Then Return False
 		WEnd
+		Click(Random(200 + ($iBaseSlot * 184), 230 + ($iBaseSlot * 184), 1) , Random(185,200,1))
 	EndIf
 	Return True
 EndFunc
 
 Func ClostChatTab()
-	If _Sleep(100) Then Return
-	ClickP($aAway, 1, 0, "#0176") ; click away any possible open window
-	If _Sleep(250) Then Return
-
 	Local $i = 0
 	While 1
-		If _Sleep(100) Then Return
-		If _ColorCheck(_GetPixelColor($aCloseChat[0], $aCloseChat[1], True), Hex($aCloseChat[2], 6), $aCloseChat[3]) Then
-			; Clicks chat thing
-			Click($aCloseChat[0], $aCloseChat[1], 1, 0, "#0173") ;Clicks chat thing
-			ExitLoop
-		Else
-			If _Sleep(100) Then Return
-			$i += 1
-			If $i > 30 Then
-				SetLog("Error finding Clan Tab to close...", $COLOR_ERROR)
-				AndroidPageError("FriendlyChallenge")
+		If _Sleep(250) Then Return
+		ForceCaptureRegion()
+		_CaptureRegion()
+		Select
+			Case _CheckColorPixel($aCloseChat[0], $aCloseChat[1], $aCloseChat[2], $aCloseChat[3], False)
+				Click($aCloseChat[0], $aCloseChat[1], 1, 0, "#0173") ;Clicks chat thing
+			Case _CheckColorPixel($aOpenChatTab[0], $aOpenChatTab[1], $aOpenChatTab[2], $aOpenChatTab[3], False)
 				ExitLoop
-			EndIf
-		EndIf
+			Case _CheckColorPixel($aButtonFCClose[4], $aButtonFCClose[5], $aButtonFCClose[6], $aButtonFCClose[7], False)
+				Click($aButtonFCClose[0], $aButtonFCClose[1], 1, 0, "#BtnFCClose") ;Clicks chat thing
+			Case _CheckColorPixel($aButtonFCBack[4], $aButtonFCBack[5], $aButtonFCBack[6], $aButtonFCBack[7], False)
+				AndroidBackButton()
+			Case Else
+				ClickP($aAway, 1, 0, "#0167") ;Click Away
+				$i += 1
+				If $i > 30 Then
+					SetLog("Error finding Clan Tab to close...", $COLOR_ERROR)
+					AndroidPageError("FriendlyChallenge")
+					ExitLoop
+				EndIf
+		EndSelect
 	WEnd
-	If _Sleep(500) Then Return
+	If _Sleep(100) Then Return
 EndFunc
 
 Func getChatStringPersianMod($x_start, $y_start, $bConvert = True) ; -> Get string chat request - Persian - "DonateCC.au3"

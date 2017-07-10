@@ -42,40 +42,32 @@ Func SelectGoogleAccount($iSlot)
 	Click($aButtonSetting[0],$aButtonSetting[1],1,0,"#Setting")
 
 	Local $iCount
-	$iCount = 0
-	While Not _ColorCheck(_GetPixelColor($aButtonClose2[4], $aButtonClose2[5],True), Hex($aButtonClose2[6],6), $aButtonClose2[7])
-		$iCount += 1
-		If $iCount > 10 Then
-			SetLog("Cannot load setting page, restart game...", $COLOR_RED)
-			CloseCoC(True)
-			Wait4Main()
-			Return False
-		EndIf
-		If _Sleep(1000) Then Return False
-	WEnd
 
-	Click($aButtonSettingTabSetting[0],$aButtonSettingTabSetting[1],1,0,"#TabSettings")
-	If _Sleep(500) Then Return False
+	If Not _Wait4Pixel($aButtonClose2[4], $aButtonClose2[5], $aButtonClose2[6], $aButtonClose2[7], 10000, 200) Then
+		SetLog("Cannot load setting page, restart game...", $COLOR_RED)
+		CloseCoC(True)
+		Wait4Main()
+		Return False
+	EndIf
 
-	If _Sleep(5) Then Return False
-	If _ColorCheck(_GetPixelColor($aButtonGoogleConnectRed[4], $aButtonGoogleConnectRed[5],True), Hex($aButtonGoogleConnectRed[6],6), $aButtonGoogleConnectRed[7]) Then
+;~  	Click($aButtonSettingTabSetting[0],$aButtonSettingTabSetting[1],1,0,"#TabSettings")
+;~  	If _Sleep(500) Then Return False
+
+	If _Sleep(250) Then Return False
+
+	If _CheckColorPixel($aButtonGoogleConnectRed[4], $aButtonGoogleConnectRed[5], $aButtonGoogleConnectRed[6], $aButtonGoogleConnectRed[7]) Then
 		Click($aButtonGoogleConnectRed[0],$aButtonGoogleConnectRed[1],1,0,"#ConnectGoogle")
 	Else
 		Click($aButtonGoogleConnectGreen[0],$aButtonGoogleConnectGreen[1],2,500,"#ConnectGoogle")
 	EndIf
 
-	$iCount = 0
-	While Not _ColorCheck(_GetPixelColor(160, 380,True), Hex(0xFFFFFF, 6),10)
-		If $g_iSamM0dDebug Then SetLog("wait for google account page Color: " & _GetPixelColor(160, 380,True))
-		$iCount += 1
-		If $iCount > 30 Then
-			SetLog("Cannot load google account page, restart game...", $COLOR_RED)
-			CloseCoC(True)
-			Wait4Main()
-			Return False
-		EndIf
-		If _Sleep(1000) Then Return False
-	WEnd
+	If Not _Wait4Pixel(160,380,0xFFFFFF,10,30000,200) Then
+		If $g_iSamM0dDebug Then SetLog("wait for google account page", $COLOR_DEBUG)
+		SetLog("Cannot load google account page, restart game...", $COLOR_RED)
+		CloseCoC(True)
+		Wait4Main()
+		Return False
+	EndIf
 
 	$iCount = 0
 	Local $bErrorFlag = 0
@@ -128,7 +120,7 @@ Func DoLoadVillage()
 	Local $iCount = 0
 	$iCount = 0
 	$bNowWaitingConfirm = True
-	While Not _ColorCheck(_GetPixelColor($aButtonVillageLoad[4], $aButtonVillageLoad[5],True), Hex($aButtonVillageLoad[6],6), $aButtonVillageLoad[7])
+	While Not _CheckColorPixel($aButtonVillageLoad[4], $aButtonVillageLoad[5], $aButtonVillageLoad[6], $aButtonVillageLoad[7])
 		If $g_iSamM0dDebug Then SetLog("village load button Color: " & _GetPixelColor(160, 380,True))
 		$iCount += 1
 		If $iCount = 90 Then
@@ -139,7 +131,7 @@ Func DoLoadVillage()
 		If $iCount >= 180 Then
 			Return 0
 		EndIf
-		If _ColorCheck(_GetPixelColor($aButtonGoogleConnectGreen[4], $aButtonGoogleConnectGreen[5],True), Hex($aButtonGoogleConnectGreen[6],6), $aButtonGoogleConnectGreen[7]) Then
+		If _CheckColorPixel($aButtonGoogleConnectGreen[4], $aButtonGoogleConnectGreen[5], $aButtonGoogleConnectGreen[6], $aButtonGoogleConnectGreen[7]) Then
 			Return 2
 		EndIf
 		If _Sleep(1000) Then Return 0
@@ -149,42 +141,33 @@ Func DoLoadVillage()
 EndFunc
 
 Func DoConfirmVillage()
-	Local $iCount = 0
-	$iCount = 0
-	While Not _ColorCheck(_GetPixelColor($aButtonVillageConfirmClose[4], $aButtonVillageConfirmClose[5],True), Hex($aButtonVillageConfirmClose[6],6), $aButtonVillageConfirmClose[7])
-		If $g_iSamM0dDebug Then SetLog("load village confirm button Color: " & _GetPixelColor(160, 380,True))
-		$iCount += 1
-		If $iCount > 15 Then
-			SetLog("Cannot load village confirm button, restart game...", $COLOR_RED)
-			CloseCoC(True)
-			Wait4Main()
-			Return False
-		EndIf
-		If _Sleep(1000) Then Return False
-	WEnd
+
+	If Not _Wait4Pixel($aButtonVillageConfirmClose[4],$aButtonVillageConfirmClose[5],$aButtonVillageConfirmClose[6],$aButtonVillageConfirmClose[7],15000,200) Then
+		SetLog("Cannot load village confirm button, restart game...", $COLOR_RED)
+		CloseCoC(True)
+		Wait4Main()
+		Return False
+	EndIf
+
 	Click($aButtonVillageConfirmText[0],$aButtonVillageConfirmText[1],1,0,"#GATe")
-	If _Sleep(500) Then Return False
+
+	If _Sleep(100) Then Return False
 	If SendText("CONFIRM") = 0 Then
 		SetLog("Cannot type CONFIRM to emulator, restart game...", $COLOR_RED)
 		CloseCoC(True)
 		Wait4Main()
 		Return False
 	EndIf
-	If _Sleep(500) Then Return False
-	$iCount = 0
-	While Not _ColorCheck(_GetPixelColor($aButtonVillageConfirmOK[4], $aButtonVillageConfirmOK[5],True), Hex($aButtonVillageConfirmOK[6],6), $aButtonVillageConfirmOK[7])
-		If $g_iSamM0dDebug Then SetLog("confirm village Okay button Color: " & _GetPixelColor(160, 380,True))
-		$iCount += 1
-		If $iCount > 15 Then
-			SetLog("Cannot confirm village Okay button, restart game...", $COLOR_RED)
-			CloseCoC(True)
-			Wait4Main()
-			Return False
-		EndIf
-		If _Sleep(1000) Then Return False
-	WEnd
+
+	If Not _Wait4Pixel($aButtonVillageConfirmOK[4],$aButtonVillageConfirmOK[5],$aButtonVillageConfirmOK[6],$aButtonVillageConfirmOK[7],15000,200) Then
+		SetLog("Cannot confirm village Okay button, restart game...", $COLOR_RED)
+		CloseCoC(True)
+		Wait4Main()
+		Return False
+	EndIf
+
 	Click($aButtonVillageConfirmOK[0],$aButtonVillageConfirmOK[1],1,0,"#GACo")
-	If _Sleep(500) Then Return False
+
 	Return True
 EndFunc
 
@@ -494,7 +477,7 @@ Func DoSwitchAcc()
 					SmartWait4TrainMini($iMySwitchSmartWaitTime)
 					$iMySwitchSmartWaitTime = 0
 				EndIf
-				If _ColorCheck(_GetPixelColor($aButtonSetting[4], $aButtonSetting[5],True), Hex($aButtonSetting[6], 6), Number($aButtonSetting[7])) Then
+				If _CheckColorPixel($aButtonSetting[4], $aButtonSetting[5], $aButtonSetting[6], $aButtonSetting[7]) Then
 					If SelectGoogleAccount($iNextAcc) = True Then
 						$iCurActiveAcc = $iNextAcc
 						DoVillageLoadSucess($iCurActiveAcc)
@@ -1055,9 +1038,9 @@ EndFunc
 
 Func btnMakeSwitchADBFolder()
 	_CaptureRegion()
-	If _ColorCheck(_GetPixelColor($aButtonClose3[4], $aButtonClose3[5], $g_bNoCapturePixel), Hex($aButtonClose3[6], 6), Number($aButtonClose3[7])) Then
+	If _CheckColorPixel($aButtonClose3[4], $aButtonClose3[5], $aButtonClose3[6], $aButtonClose3[7], $g_bNoCapturePixel) Then
 		Local $iSecondBaseTabHeight
-		If _ColorCheck(_GetPixelColor(146, 146, $g_bNoCapturePixel), Hex(0XB8B8A8,6), 10) = True Then
+		If _CheckColorPixel(146,146,0XB8B8A8,10,$g_bNoCapturePixel) = True Then
 			$iSecondBaseTabHeight = 49
 		Else
 			$iSecondBaseTabHeight = 0
@@ -1247,7 +1230,7 @@ Func Wait4Main()
 			Setlog("ChkObstl Loop = " & $i & "   ExitLoop = " & $iCount, $COLOR_DEBUG) ; Debug stuck loop
 		EndIf
 		_CaptureRegion()
-		If _ColorCheck(_GetPixelColor($aButtonOpenShieldInfo[4], $aButtonOpenShieldInfo[5], $g_bNoCapturePixel), Hex($aButtonOpenShieldInfo[6], 6), Number($aButtonOpenShieldInfo[7])) Then ;Checks for Main Screen
+		If _CheckColorPixel($aButtonOpenShieldInfo[4], $aButtonOpenShieldInfo[5], $aButtonOpenShieldInfo[6], $aButtonOpenShieldInfo[7], $g_bNoCapturePixel) Then ;Checks for Main Screen
 			If $g_iSamM0dDebug Then Setlog("Screen cleared, WaitMainScreen exit", $COLOR_DEBUG)
 			ExitLoop
 		Else

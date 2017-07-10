@@ -1059,7 +1059,7 @@ Func DonateWindow($Open = True)
 		Local $g_aiDonatePixelCheck = _MultiPixelSearch($iLeft, $iTop, $iRight, $iBottom, 50, 1, Hex(0x98D057, 6), $aChatDonateBtnColors, 15)
 		If IsArray($g_aiDonatePixelCheck) Then
 			Click($g_aiDonatePixel[0] + 50, $g_aiDonatePixel[1] + 10, 1, 0, "#0174")
-			If WaitforPixel(331, $g_aiDonatePixel[1], 332, $g_aiDonatePixel[1] + 1, Hex(0xFFFFFF, 6), 6, 20) Then
+			If _Wait4Pixel(331, $g_aiDonatePixel[1], 0xFFFFFF, 6, 1500) Then
 				ExitLoop
 			EndIf
 		Else

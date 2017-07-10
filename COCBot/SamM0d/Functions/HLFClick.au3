@@ -247,10 +247,10 @@ Func CheckClickMsg(ByRef $x, ByRef $y, ByRef $times, ByRef $speed, ByRef $MsgCod
 			$MsgCode = $aButtonOpenLaunchAttack[8]
 			Return HMLClickPR($aButtonOpenLaunchAttack,$x,$y,1)
 		Case "#0150"
-			If _ColorCheck(_GetPixelColor($aButtonAttackFindMatch[4], $aButtonAttackFindMatch[5], True), Hex($aButtonAttackFindMatch[6], 6), $aButtonAttackFindMatch[7]) Then
+			If _CheckColorPixel($aButtonAttackFindMatch[4], $aButtonAttackFindMatch[5], $aButtonAttackFindMatch[6], $aButtonAttackFindMatch[7]) Then
 				$MsgCode = $aButtonAttackFindMatch[8]
 				Return HMLClickPR($aButtonAttackFindMatch,$x,$y,1)
-			ElseIf _ColorCheck(_GetPixelColor($aButtonAttackFindMatchWShield[4], $aButtonAttackFindMatchWShield[5], True), Hex($aButtonAttackFindMatchWShield[6], 6), $aButtonAttackFindMatchWShield[7]) Then
+			ElseIf _CheckColorPixel($aButtonAttackFindMatchWShield[4], $aButtonAttackFindMatchWShield[5], $aButtonAttackFindMatchWShield[6], $aButtonAttackFindMatchWShield[7]) Then
 				$MsgCode = $aButtonAttackFindMatchWShield[8]
 				Return HMLClickPR($aButtonAttackFindMatchWShield,$x,$y,1)
 			Else
@@ -443,7 +443,7 @@ Func HMLClickAway(ByRef $x, ByRef $y, ByRef $MsgCode)
 		_CaptureRegion()
 		For $i = 1 To 7
 			Local $tempButton = Eval("aButtonClose" & $i)
-			If _ColorCheck(_GetPixelColor($tempButton[4], $tempButton[5]), Hex($tempButton[6], 6), Number($tempButton[7])) Then
+			If _CheckColorPixel($tempButton[4], $tempButton[5], $tempButton[6], $tempButton[7]) Then
 				$MsgCode = $tempButton[8]
 				Return HMLClickPR($tempButton,$x,$y)
 			EndIf
@@ -459,7 +459,7 @@ Func HMLClickPR($point, ByRef $x, ByRef $y, $checkpixelcolor = 0, $bForceReCapRe
 	Switch $checkpixelcolor
 		Case 1
 			; Do Check color if the pixel color define at button variable = true then we click
-			If _ColorCheck(_GetPixelColor($point[4], $point[5], $bForceReCapRegion), Hex($point[6], 6), $point[7]) Then
+			If _CheckColorPixel($point[4], $point[5], $point[6], $point[7], $bForceReCapRegion) Then
 				$x = Random($point[0],$point[2],1)
 				$y = Random($point[1],$point[3],1)
 				Return 1
@@ -469,7 +469,7 @@ Func HMLClickPR($point, ByRef $x, ByRef $y, $checkpixelcolor = 0, $bForceReCapRe
 			EndIf
 		Case 2
 			; Do Check color if the pixel color define at button variable = false then we click
-			If Not _ColorCheck(_GetPixelColor($point[4], $point[5], $bForceReCapRegion), Hex($point[6], 6), $point[7]) Then
+			If Not _CheckColorPixel($point[4], $point[5], $point[6], $point[7], $bForceReCapRegion) Then
 				$x = Random($point[0],$point[2],1)
 				$y = Random($point[1],$point[3],1)
 				Return 1
