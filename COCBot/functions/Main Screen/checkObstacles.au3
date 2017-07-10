@@ -196,7 +196,7 @@ Func _checkObstacles() ;Checks if something is in the way for mainscreen
 		Return False
 	EndIf
 
-	If $ichkProfileImage = 0 Then
+	If $bNowWaitingConfirm = False Then
 		If _ColorCheck(_GetPixelColor($aButtonVillageCancel[4], $aButtonVillageCancel[5],$g_bNoCapturePixel), Hex($aButtonVillageCancel[6], 6), $aButtonVillageCancel[7]) And _
 			_ColorCheck(_GetPixelColor($aButtonVillageLoad[4], $aButtonVillageLoad[5],$g_bNoCapturePixel), Hex($aButtonVillageLoad[6], 6), $aButtonVillageLoad[7]) Then
 			Click($aButtonVillageCancel[0],$aButtonVillageCancel[1],1,0,"#VL01")
@@ -205,6 +205,7 @@ Func _checkObstacles() ;Checks if something is in the way for mainscreen
 			Return False
 		EndIf
 	EndIf
+
 
 	; KunLun Version un click verify for real name
 ;~ 	If _ColorCheck(_GetPixelColor(550, 400,$g_bNoCapturePixel), Hex(0xFFBB34, 6),5) And _ColorCheck(_GetPixelColor(450, 400,$g_bNoCapturePixel), Hex(0xFFBB34, 6),5) And _

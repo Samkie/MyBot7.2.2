@@ -102,6 +102,8 @@ Func SelectGoogleAccount($iSlot)
 	Local $iResult
 	$iResult = DoLoadVillage()
 
+	$bNowWaitingConfirm =False
+
 	If $iResult <> 1 And $iResult <> 2 Then Return False
 
 	If _Sleep(500) Then Return False
@@ -125,6 +127,7 @@ EndFunc
 Func DoLoadVillage()
 	Local $iCount = 0
 	$iCount = 0
+	$bNowWaitingConfirm = True
 	While Not _ColorCheck(_GetPixelColor($aButtonVillageLoad[4], $aButtonVillageLoad[5],True), Hex($aButtonVillageLoad[6],6), $aButtonVillageLoad[7])
 		If $g_iSamM0dDebug Then SetLog("village load button Color: " & _GetPixelColor(160, 380,True))
 		$iCount += 1
@@ -550,6 +553,7 @@ Func DoVillageLoadSucess($iAcc)
 	$g_bRestart = False
 	$bDonateAwayFlag = False
 	$bJustMakeDonate = False
+	$bNowWaitingConfirm = False
 
 	$iDonatedUnit = 0
 	$iTimeForLastShareFriendlyChallenge = 0
