@@ -434,32 +434,32 @@ Func DonateCC($Check = False)
 			If $bDonateAllTroop Or $bDonateAllSpell Then
 				If $g_iDebugSetlog = 1 Then Setlog("Troop/Spell All checkpoint.", $COLOR_DEBUG) ;Debug
 				$g_bDonateAllRespectBlk = True
+				If $bDonateWindowOpen = False Then
+					; open Donate Window
+					If _Sleep(1000) Then Return
+					If ($g_bSkipDonTroops And $g_bSkipDonSpells) Or Not DonateWindow($bOpen) Then
+						$bDonate = True
+						$y = $g_aiDonatePixel[1] + 50
+						SetLog("Donate Window did not open - Exiting Donate", $COLOR_ERROR)
+						ExitLoop ; Leave donate to prevent a bot hang condition
+					EndIf
+					$bDonateWindowOpen = True
+				EndIf
+
+				; read available donate cap, and ByRef set the $g_bSkipDonTroops and $g_bSkipDonSpells flags
+				DonateWindowCap($g_bSkipDonTroops, $g_bSkipDonSpells)
+				If $g_bSkipDonTroops And $g_bSkipDonSpells Then
+					DonateWindow($bClose)
+					$bDonateWindowOpen = False
+					$bDonate = True
+					$y = $g_aiDonatePixel[1] + 50
+					If _Sleep($DELAYDONATECC2) Then ExitLoop
+					ContinueLoop ; go to next button if already donated, maybe this is an impossible case..
+				EndIf
 
 				If $bDonateAllTroop And Not $g_bSkipDonTroops Then
 
 					;$bDonateAllRespectBlk = True
-					If $bDonateWindowOpen = False Then
-						; open Donate Window
-						If _Sleep(1000) Then Return
-						If ($g_bSkipDonTroops And $g_bSkipDonSpells) Or Not DonateWindow($bOpen) Then
-							$bDonate = True
-							$y = $g_aiDonatePixel[1] + 50
-							SetLog("Donate Window did not open - Exiting Donate", $COLOR_ERROR)
-							ExitLoop ; Leave donate to prevent a bot hang condition
-						EndIf
-						$bDonateWindowOpen = True
-					EndIf
-
-					; read available donate cap, and ByRef set the $g_bSkipDonTroops and $g_bSkipDonSpells flags
-					DonateWindowCap($g_bSkipDonTroops, $g_bSkipDonSpells)
-					If $g_bSkipDonTroops And $g_bSkipDonSpells Then
-						DonateWindow($bClose)
-						$bDonateWindowOpen = False
-						$bDonate = True
-						$y = $g_aiDonatePixel[1] + 50
-						If _Sleep($DELAYDONATECC2) Then ExitLoop
-						ContinueLoop ; go to next button if already donated, maybe this is an impossible case..
-					EndIf
 					If $g_iDebugSetlog = 1 Then Setlog("Troop All checkpoint.", $COLOR_DEBUG)
 					Select
 						Case $g_abChkDonateAllTroop[$eCustomA]
