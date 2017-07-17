@@ -186,6 +186,7 @@ Func buildSwitchList()
 	$aSwitchList[$iCount][5] = 0
 	$aSwitchList[$iCount][6] = 0
 	$iTotalDonateType = 0
+
 	For $i = 0 To 7
 		If $ichkEnableAcc[$i] = 1 Then
 			If $icmbSwitchMethod = 1 Then
@@ -219,11 +220,14 @@ Func buildSwitchList()
 			If $icmbAtkDon[$i] = 1 Then
 				$iTotalDonateType += 1
 			EndIf
-			$iCount += 1
-		Else
-			If $i = $iCurActiveAcc Then
-				$iCurActiveAcc = -1
+			If $icmbWithProfile[$i] = $g_sProfileCurrentName And $iCurActiveAcc <> -1 Then
+				$iCurActiveAcc = $i
 			EndIf
+			$iCount += 1
+ 		Else
+ 			If $i = $iCurActiveAcc Then
+ 				$iCurActiveAcc = -1
+ 			EndIf
 		EndIf
 	Next
 
@@ -363,7 +367,7 @@ Func getNextSwitchList()
 		For $i = 0 to UBound($aSwitchList) - 1
 			If $aSwitchList[$i][5] = 0 Then  ; select this profile if not is PB activate
 				$iNextAccSlot = $aSwitchList[$i][4]
-				If $ichkCanCloseGame Then
+				If $ichkCanCloseGame = 1 Then
 					Local $iDateCalc2 = _DateDiff('s', $aSwitchList[$i][0], _NowCalc()) ;compare date time from last check, return different seconds
 					;SetLog("$iDateCalc2: " & $iDateCalc2)
 					If $iDateCalc2 < 0 Then
@@ -496,20 +500,17 @@ Func DoSwitchAcc()
 					$g_bRestart = True
 				EndIf
 		EndSwitch
-	EndIf
 
-	;GUICtrlSetData($g_hLblActiveAcc,"Current Active Acc: " & $iCurActiveAcc + 1)
-	GUICtrlSetData($grpMySwitch,"Current Active Acc: " & @CRLF & $aSwitchList[$iCurStep][4] + 1 & " - " & $aSwitchList[$iCurStep][3] & " [" & ($aSwitchList[$iCurStep][2] = 1 ? "D" : "A") &  "]")
-	If $iCurActiveAcc <> - 1 Then
-		GUICtrlSetData($g_hLblProfileName,$icmbWithProfile[$iCurActiveAcc])
-	Else
-		$bChangeNextAcc = True
-	EndIf
+		GUICtrlSetData($grpMySwitch,"Current Active Acc: " & @CRLF & $aSwitchList[$iCurStep][4] + 1 & " - " & $aSwitchList[$iCurStep][3] & " [" & ($aSwitchList[$iCurStep][2] = 1 ? "D" : "A") &  "]")
+		If $iCurActiveAcc <> - 1 Then
+			GUICtrlSetData($g_hLblProfileName,$icmbWithProfile[$iCurActiveAcc])
+		EndIf
 
-	If $g_bCloseWhileTrainingEnable Then
-		SetLog("Disable smart wait")
-		GUICtrlSetState($g_hChkCloseWhileTraining, $GUI_UNCHECKED)
-		$g_bCloseWhileTrainingEnable = False
+		If $g_bCloseWhileTrainingEnable Then
+			SetLog("Disable smart wait")
+			GUICtrlSetState($g_hChkCloseWhileTraining, $GUI_UNCHECKED)
+			$g_bCloseWhileTrainingEnable = False
+		EndIf
 	EndIf
 
 	ClickP($aAway,1,0)
@@ -595,26 +596,8 @@ Func DoVillageLoadSucess($iAcc)
 			Wait4Main()
 		EndIf
 	EndIf
-
-	If _Sleep(1000) Then Return
-	checkMainScreen(True)
-
-	If $ichkProfileImage = 1 Then ; check with image is that village load correctly
-		If checkProfileCorrect() = True Then
-			SetLog("Profile match with village.png, profile loaded correctly.", $COLOR_INFO)
-			$iCheckAccProfileError = 0
-			;$bProfileImageChecked = True
-		Else
-			SetLog("Profile not match with village.png, profile load failed.", $COLOR_ERROR)
-			$iCheckAccProfileError += 1
-			If $iCheckAccProfileError > 2 Then
-				$iCheckAccProfileError = 0
-				DoVillageLoadFailed()
-			EndIf
-			$iCurActiveAcc = -1
-			$g_bRestart = True
-		EndIf
-	EndIf
+;~ 	If _Sleep(1000) Then Return
+;~ 	checkMainScreen(True)
 EndFunc
 
 Func DoVillageLoadFailed()

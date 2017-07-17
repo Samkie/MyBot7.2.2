@@ -71,7 +71,7 @@ InitializeBot()
 MainLoop()
 
 Func UpdateBotTitle()
-	Local $sTitle = "My Bot " & $g_sBotVersion & " @Samkie M0d v0.9.9 "
+	Local $sTitle = "My Bot " & $g_sBotVersion & " @Samkie M0d v1.0 "
 	If $g_sBotTitle = "" Then
 		$g_sBotTitle = $sTitle
 	Else
@@ -686,29 +686,41 @@ Func runBot() ;Bot that runs everything in order
 		$tempDisableTrain = False
 		$bAvoidSwitch = False
 
+		; samm0d switch
+		If $ichkEnableMySwitch Then
+			If $g_iSamM0dDebug Then SetLog("$bAvoidSwitch: " & $bAvoidSwitch)
+			$bUpdateStats = True
+			If $g_bIsClientSyncError = False And $g_bIsSearchLimit = False And ($g_bQuickAttack = False) Then
+				DoSwitchAcc()
+				If $g_bRestart = True Then ContinueLoop
+			EndIf
+			$iDoPerformAfterSwitch = True
+
+			If $ichkProfileImage = 1 Then ; check with image is that village load correctly
+				If $bAvoidSwitch = False And $bChangeNextAcc = True Then
+					If checkProfileCorrect() = True Then
+						SetLog("Profile match with village.png, profile loaded correctly.", $COLOR_INFO)
+						$iCheckAccProfileError = 0
+						;$bProfileImageChecked = True
+					Else
+						SetLog("Profile not match with village.png, profile load failed.", $COLOR_ERROR)
+						$iCheckAccProfileError += 1
+						If $iCheckAccProfileError > 2 Then
+							$iCheckAccProfileError = 0
+							DoVillageLoadFailed()
+						EndIf
+						$iCurActiveAcc = -1
+						$g_bRestart = True
+					EndIf
+				EndIf
+			EndIf
+			If $g_iTownHallLevel = 0 Then BotDetectFirstTime()
+		EndIf
+
 		$g_iCommandStop = -1
 		If _Sleep($DELAYRUNBOT1) Then Return
 		checkMainScreen()
 		If $g_bRestart = True Then ContinueLoop
-
-
-		; samm0d switch
-		If $ichkEnableMySwitch Then
-			If $g_iSamM0dDebug Then SetLog("$bAvoidSwitch: " & $bAvoidSwitch)
-;~ 			If $bAvoidSwitch = False Then
-				$bUpdateStats = True
-				If $g_bIsClientSyncError = False And $g_bIsSearchLimit = False And ($g_bQuickAttack = False) Then
-					DoSwitchAcc()
-					If $g_bRestart = True Then ContinueLoop
-				EndIf
-				$iDoPerformAfterSwitch = True
-				If $g_iTownHallLevel = 0 Then BotDetectFirstTime()
-;~ 			Else
-;~ 				SetLog("Avoid switch, troops getting ready or soon.", $COLOR_INFO)
-;~ 			EndIf
-			; reset variable
-;~ 			$bAvoidSwitch = False
-		EndIf
 
 		PrepareDonateCC()
 
