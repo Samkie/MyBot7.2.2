@@ -350,7 +350,6 @@ Func TroopsAndSpellsChecker($bDisableTrain = True, $bDisableBrewSpell = True, $b
 			; reset Global variables
 			For $i = $enumLightning To $enumSkeleton
 				Assign("Cur" & $MySpells[$i][0] & "Spell", 0)
-				Assign("Cur" & $g_asSpellShortNames[$i], 0)
 				Assign("OnQ" & $MySpells[$i][0] & "Spell", 0)
 				Assign("OnT" & $MySpells[$i][0] & "Spell", 0)
 			Next

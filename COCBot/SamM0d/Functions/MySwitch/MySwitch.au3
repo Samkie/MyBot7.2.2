@@ -562,18 +562,13 @@ Func DoVillageLoadSucess($iAcc)
 	Next
 	For $i = 0 To UBound($MyTroops) - 1
 		Assign("cur" & $MyTroops[$i][0], 0)
-	Next
-	For $i = 0 To UBound($MyTroops) - 1
 		Assign("OnQ" & $MyTroops[$i][0], 0)
-	Next
-	For $i = 0 To UBound($MyTroops) - 1
 		Assign("OnT" & $MyTroops[$i][0], 0)
 	Next
 
 	; reset Global variables for spells
 	For $i = $enumLightning To $enumSkeleton
 		Assign("Cur" & $MySpells[$i][0] & "Spell", 0)
-		Assign("Cur" & $g_asSpellShortNames[$i], 0)
 		Assign("OnQ" & $MySpells[$i][0] & "Spell", 0)
 		Assign("OnT" & $MySpells[$i][0] & "Spell", 0)
 	Next

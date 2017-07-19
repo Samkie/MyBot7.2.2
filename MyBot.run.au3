@@ -71,7 +71,7 @@ InitializeBot()
 MainLoop()
 
 Func UpdateBotTitle()
-	Local $sTitle = "My Bot " & $g_sBotVersion & " @Samkie M0d v1.0 "
+	Local $sTitle = "My Bot " & $g_sBotVersion & " @Samkie M0d v1.0.1 "
 	If $g_sBotTitle = "" Then
 		$g_sBotTitle = $sTitle
 	Else
@@ -715,7 +715,9 @@ Func runBot() ;Bot that runs everything in order
 							DoVillageLoadFailed()
 						EndIf
 						$iCurActiveAcc = -1
-						$g_bRestart = True
+						ClickP($aAway,1,0)
+						If _Sleep(1000) Then Return True
+						ContinueLoop
 					EndIf
 				EndIf
 			EndIf
