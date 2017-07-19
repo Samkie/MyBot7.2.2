@@ -20,7 +20,6 @@ Global Const $sColorNotPossible = Hex(0xC0C0C0, 6) ; relative location: 3,19, up
 Global Const $sColorMaxTroop = Hex(0xFFC360, 6) ; relative location: 23,60; troop already MAX
 
 Func Laboratory()
-
 	;Create local static array to hold upgrade values
 	Static $aUpgradeValue[30] = [-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 	Local $iAvailElixir, $iAvailDark, $sElixirCount, $sDarkCount, $TimeDiff, $aArray, $Result
@@ -110,9 +109,46 @@ Func Laboratory()
 	EndIf
 
 	If $g_avLabTroops[$g_iCmbLaboratory][2] >= 1 Then ;Check if troop located on page 2 of lab window and Move to three icon squares to get spells
-		;_PostMessage_ClickDrag(650, 423 + $g_iMidOffsetY, 545, 423 + $g_iMidOffsetY, "left", 1000)
-		ClickDrag(650, 443 + $g_iMidOffsetY, 323, 443 + $g_iMidOffsetY, 1000)
-		;_PostMessage_ClickDrag(734, 393, 643, 393, "left", 1500)
+		; samm0d - accurate drag for memu and bluestack to detect miner to clone spell
+		ClickDrag(650, 443 + $g_iMidOffsetY, 120, 443 + $g_iMidOffsetY, 1000)
+		Local $iCount = 0
+		While 1
+			ForceCaptureRegion()
+			_CaptureRegion()
+			Local $bDragFlag = False
+			For $i = 180 To 115 Step -1
+				If _ColorCheck(_GetPixelColor($i, 515, $g_bNoCapturePixel), Hex(0xD3D3CB, 6), 6) And _ColorCheck(_GetPixelColor($i, 520, $g_bNoCapturePixel), Hex(0xD3D3CB, 6), 6) Then
+					;SetLog("ClickDrag: " & $i & "," & 443 + $g_iMidOffsetY & "," & 114 & "," & 443 + $g_iMidOffsetY)
+					If $i - 114 < 10 Then
+						ClickDrag($i, 443 + $g_iMidOffsetY, $i + 10, 443 + $g_iMidOffsetY, 500)
+						ClickDrag($i+10, 443 + $g_iMidOffsetY, 114, 443 + $g_iMidOffsetY, 500)
+					Else
+						ClickDrag($i, 443 + $g_iMidOffsetY, 114, 443 + $g_iMidOffsetY, 500)
+					EndIf
+					$bDragFlag = True
+					ExitLoop
+				EndIf
+			Next
+
+			If $bDragFlag = False Then
+				For $i = 675 To 740
+					If _ColorCheck(_GetPixelColor($i, 515, $g_bNoCapturePixel), Hex(0xD3D3CB, 6), 6) And _ColorCheck(_GetPixelColor($i, 520, $g_bNoCapturePixel), Hex(0xD3D3CB, 6), 6) Then
+						;SetLog("ClickDrag: " & $i & "," & 443 + $g_iMidOffsetY & "," & 741 & "," & 443 + $g_iMidOffsetY)
+						If 741 - $i < 10 Then
+							ClickDrag($i, 443 + $g_iMidOffsetY, $i - 10, 443 + $g_iMidOffsetY, 500)
+							ClickDrag($i-10, 443 + $g_iMidOffsetY, 741, 443 + $g_iMidOffsetY, 500)
+						Else
+							ClickDrag($i, 443 + $g_iMidOffsetY, 741, 443 + $g_iMidOffsetY, 500)
+						EndIf
+						$bDragFlag = True
+						ExitLoop
+					EndIf
+				Next
+			EndIf
+			If $bDragFlag = False Then ExitLoop
+			$iCount += 1
+			If $iCount > 10 Then ExitLoop
+		WEnd
 		If _Sleep($DELAYLABORATORY3) Then Return
 		If $g_iDebugSetlog = 1 Then LabTroopImages2() ; Debug Only
 		If $g_iFirstTimeLab < 2 Then

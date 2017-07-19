@@ -99,3 +99,7 @@ EndFunc   ;==>AndroidSuspendFlagsToIndex
 Func cmbSuspendAndroid()
 	$g_iAndroidSuspendModeFlags = AndroidSuspendIndexToFlags(_GUICtrlComboBox_GetCurSel($g_hCmbSuspendAndroid))
 EndFunc   ;==>cmbSuspendAndroid
+
+Func ChkAndroidAdbClickDragScript()
+	$g_bAndroidAdbClickDragScript = (GUICtrlRead($g_hChkAndroidAdbClickDragScript) = $GUI_CHECKED ? True : False)
+EndFunc   ;==>ChkAndroidAdbClickDragScript

@@ -685,6 +685,7 @@ Func runBot() ;Bot that runs everything in order
 		$tempDisableBrewSpell = False
 		$tempDisableTrain = False
 		$bAvoidSwitch = False
+		$g_iCommandStop = -1
 
 		; samm0d switch
 		If $ichkEnableMySwitch Then
@@ -695,6 +696,10 @@ Func runBot() ;Bot that runs everything in order
 				If $g_bRestart = True Then ContinueLoop
 			EndIf
 			$iDoPerformAfterSwitch = True
+
+			If _Sleep($DELAYRUNBOT1) Then Return
+			checkMainScreen()
+			If $g_bRestart = True Then ContinueLoop
 
 			If $ichkProfileImage = 1 Then ; check with image is that village load correctly
 				If $bAvoidSwitch = False And $bChangeNextAcc = True Then
@@ -715,12 +720,11 @@ Func runBot() ;Bot that runs everything in order
 				EndIf
 			EndIf
 			If $g_iTownHallLevel = 0 Then BotDetectFirstTime()
+		Else
+			If _Sleep($DELAYRUNBOT1) Then Return
+			checkMainScreen()
+			If $g_bRestart = True Then ContinueLoop
 		EndIf
-
-		$g_iCommandStop = -1
-		If _Sleep($DELAYRUNBOT1) Then Return
-		checkMainScreen()
-		If $g_bRestart = True Then ContinueLoop
 
 		PrepareDonateCC()
 

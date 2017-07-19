@@ -312,39 +312,38 @@ Func DonateCC($Check = False)
 				ContinueLoop ; go to next button if cant read Castle Troops and Spells before the donate window opens
 			EndIf
 
-					; ==== samm0d
-					; compare
-
-					If $bDonateTroop = 1 And $g_bSkipDonTroops = False Then
-						For $i = 0 To UBound($g_aiDonateTroopPriority) - 1
-							Local $iTroopIndex = $g_aiDonateTroopPriority[$i]
-							If $g_abChkDonateTroop[$iTroopIndex] Then
-								Assign("canDon" & $g_asTroopShortNames[$iTroopIndex], CheckDonate($iTroopIndex, $g_asTxtDonateTroop[$iTroopIndex], $g_asTxtBlacklistTroop[$iTroopIndex], $ClanString, True))
-								If Eval("canDon" & $g_asTroopShortNames[$iTroopIndex]) Then $bDonateFlag = True
-								;SetLog($g_asTroopShortNames[$iTroopIndex] & " $bDonateFlag: " & $bDonateFlag)
-							EndIf
-						Next
-
-						If $g_abChkDonateTroop[$eCustomA] Then
-							$canDonCustomA = CheckDonate(99, $g_asTxtDonateTroop[$eCustomA], $g_asTxtBlacklistTroop[$eCustomA], $ClanString, True)
-							If $canDonCustomA Then $bDonateFlag = True
-						EndIf
-						If $g_abChkDonateTroop[$eCustomB] Then
-							$canDonCustomB = CheckDonate(99, $g_asTxtDonateTroop[$eCustomB], $g_asTxtBlacklistTroop[$eCustomB], $ClanString, True)
-							If $canDonCustomB Then $bDonateFlag = True
-						EndIf
+			; ==== samm0d
+			; compare
+			If $bDonateTroop = 1 And $g_bSkipDonTroops = False Then
+				For $i = 0 To UBound($g_aiDonateTroopPriority) - 1
+					Local $iTroopIndex = $g_aiDonateTroopPriority[$i]
+					If $g_abChkDonateTroop[$iTroopIndex] Then
+						Assign("canDon" & $g_asTroopShortNames[$iTroopIndex], CheckDonate($iTroopIndex, $g_asTxtDonateTroop[$iTroopIndex], $g_asTxtBlacklistTroop[$iTroopIndex], $ClanString, True))
+						If Eval("canDon" & $g_asTroopShortNames[$iTroopIndex]) Then $bDonateFlag = True
+						;SetLog($g_asTroopShortNames[$iTroopIndex] & " $bDonateFlag: " & $bDonateFlag)
 					EndIf
+				Next
 
-					If $bDonateSpell = 1 And Not $g_bSkipDonSpells Then
-						If $g_iDebugSetlog = 1 Then Setlog("Spell checkpoint.", $COLOR_DEBUG)
-						For $i = 0 To UBound($g_aiDonateSpellPriority) - 1
-							Local $iSpellIndex = $g_aiDonateSpellPriority[$i]
-							If $g_abChkDonateSpell[$iSpellIndex] Then
-								Assign("canDon" & $g_asSpellNames[$iSpellIndex], CheckDonate($iSpellIndex, $g_asTxtDonateSpell[$iSpellIndex], $g_asTxtBlacklistSpell[$iSpellIndex], $ClanString, False))
-								If Eval("canDon" & $g_asSpellNames[$iSpellIndex]) Then $bDonateFlag = True
-							EndIf
-						Next
+				If $g_abChkDonateTroop[$eCustomA] Then
+					$canDonCustomA = CheckDonate(99, $g_asTxtDonateTroop[$eCustomA], $g_asTxtBlacklistTroop[$eCustomA], $ClanString, True)
+					If $canDonCustomA Then $bDonateFlag = True
+				EndIf
+				If $g_abChkDonateTroop[$eCustomB] Then
+					$canDonCustomB = CheckDonate(99, $g_asTxtDonateTroop[$eCustomB], $g_asTxtBlacklistTroop[$eCustomB], $ClanString, True)
+					If $canDonCustomB Then $bDonateFlag = True
+				EndIf
+			EndIf
+
+			If $bDonateSpell = 1 And Not $g_bSkipDonSpells Then
+				If $g_iDebugSetlog = 1 Then Setlog("Spell checkpoint.", $COLOR_DEBUG)
+				For $i = 0 To UBound($g_aiDonateSpellPriority) - 1
+					Local $iSpellIndex = $g_aiDonateSpellPriority[$i]
+					If $g_abChkDonateSpell[$iSpellIndex] Then
+						Assign("canDon" & $g_asSpellNames[$iSpellIndex], CheckDonate($iSpellIndex, $g_asTxtDonateSpell[$iSpellIndex], $g_asTxtBlacklistSpell[$iSpellIndex], $ClanString, False))
+						If Eval("canDon" & $g_asSpellNames[$iSpellIndex]) Then $bDonateFlag = True
 					EndIf
+				Next
+			EndIf
 
 			If $bDonateFlag Then
 				If $bDonateTroop Or $bDonateSpell Then
@@ -616,7 +615,9 @@ Func CheckDonate(Const $iTroopIndex, Const $sDonateTroopString, Const $sBlacklis
 	Local $asSplitBlacklist = StringSplit($sBlacklistTroopString, @CRLF, $STR_ENTIRESPLIT)
 	Local $asSplitGeneralBlacklist = StringSplit($g_sTxtGeneralBlacklist, @CRLF, $STR_ENTIRESPLIT)
 
-	If Not $g_bDonateAllRespectBlk Then
+	If $g_bDonateAllRespectBlk Then
+		$bKeywordFound = True
+	Else
 		For $i = 1 To UBound($asSplitDonate) - 1
 			If CheckDonateString($asSplitDonate[$i], $sClanString) Then
 				Setlog($sName & " Keyword found: " & $asSplitDonate[$i], $COLOR_SUCCESS)
@@ -624,6 +625,7 @@ Func CheckDonate(Const $iTroopIndex, Const $sDonateTroopString, Const $sBlacklis
 			EndIf
 		Next
 	EndIf
+
 
 	If $bKeywordFound Then ; samm0d - If donate keyword found then we check the blacklist keyword
 		For $i = 1 To UBound($asSplitGeneralBlacklist) - 1
@@ -669,13 +671,9 @@ Func CheckDonate(Const $iTroopIndex, Const $sDonateTroopString, Const $sBlacklis
 
 		Return $bKeywordFound
 	Else
-		;If $debugsetlog = 1 Then Setlog("Bad call of CheckDonateTroop:" & $Type & "=" & NameOfTroop($Type), $COLOR_DEBUG)
-		;SetLog("Skip: Donation keyword not found.",$COLOR_RED)
-		If $g_bDonateAllRespectBlk Then Return True
-		If $g_iDebugSetlog = 1 Then Setlog("Bad call of CheckDonateTroop: " & $sName, $COLOR_DEBUG)
+		If $g_iDebugSetlog = 1 Then Setlog("Keyword for " & $sName & " not found.", $COLOR_DEBUG)
 		Return False
 	EndIf
-
 EndFunc   ;==>CheckDonate
 
 ;~ Func CheckDonateSpell(Const $iSpellIndex, Const $sDonateSpellString, Const $sBlacklistSpellString, Const $sClanString)

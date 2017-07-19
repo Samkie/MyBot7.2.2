@@ -38,6 +38,8 @@ Func CreateBotAndroid()
 	   $g_hChkAndroidAdbClickDragScript = GUICtrlCreateCheckbox(GetTranslatedFileIni("Android", "ChkAdbClickDragScript", "Use script for accurate Click && Drag"), $x, $y, -1, -1)
 	   _GUICtrlSetTip(-1, GetTranslatedFileIni("Android", "ChkAdbClickDragScript_Info", "Use Android specific script file for Click & Drag.\r\nIf unchecked use more compatible 'input swipe'."))
 	   GUICtrlSetState(-1, (($g_bAndroidAdbClickDragScript) ? ($GUI_CHECKED) : ($GUI_UNCHECKED)))
+	   GUICtrlSetOnEvent(-1, "ChkAndroidAdbClickDragScript")
+
    GUICtrlCreateGroup("", -99, -99, 1, 1)
 
    $y += $h + 5

@@ -396,10 +396,12 @@ Func FriendlyChallenge()
 					EndIf
 				EndIf
 			Next
-			If UBound($aLastResult) > 1 Then
+			If $iCount >= 1 Then
 				_ArraySort($aLastResult, 1, 0, 0, 1) ; rearrange order by coor Y
+				$iMax = UBound($aLastResult) -1
+				If $g_iSamM0dDebug Then SetLog("Total Chat Message: " & $iMax + 1, $COLOR_ERROR)
 				_CaptureRegion2(0,0,287,732)
-				For $i = 0 To UBound($aLastResult) - 1
+				For $i = 0 To $iMax
 					If $g_bChkExtraAlphabets Then
 						; Chat Request using "coc-latin-cyr" xml: Latin + Cyrillic derived alphabets / three paragraphs
 						If $g_iSamM0dDebug Then Setlog("Using OCR to read Latin and Cyrillic derived alphabets..", $COLOR_ACTION)
@@ -501,6 +503,8 @@ Func FriendlyChallenge()
 					EndIf
 				Next
 			EndIf
+		Else
+			If $g_iSamM0dDebug Then SetLog("divide not found.", $COLOR_DEBUG)
 		EndIf
 		If $g_hHBitmap2 <> 0 Then GdiDeleteHBitmap($g_hHBitmap2)
 	EndIf
