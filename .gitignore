@@ -108,6 +108,7 @@ CSV/THsnipe/[Tt]est*.csv
 #Sam Mod image
 ![Ii]mages/triangle_left.bmp
 ![Ii]mages/triangle_right.bmp
+!COCBot/SamM0d/[Ii]mages/Chat/*.*
 !COCBot/SamM0d/[Ii]mages/TrainButtons/*.*
 !COCBot/SamM0d/[Ii]mages/Troops/*.*
 !COCBot/SamM0d/[Ii]mages/Troops/Queue/*.*
