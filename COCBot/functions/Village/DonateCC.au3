@@ -1171,15 +1171,15 @@ Func RemainingCCcapacity()
 
 	; Verify with OCR the Donation Clan Castle capacity
 	If $g_iDebugSetlog = 1 Then Setlog("Started dual getOcrSpaceCastleDonate", $COLOR_DEBUG)
-	$aCapTroops = getOcrSpaceCastleDonate(49, $g_aiDonatePixel[1]) ; when the request is troops+spell
-	$aCapSpells = getOcrSpaceCastleDonate(154, $g_aiDonatePixel[1]) ; when the request is troops+spell
+	$aCapTroops = getOcrSpaceCastleDonate(49, $g_aiDonatePixel[1]+2) ; when the request is troops+spell
+	$aCapSpells = getOcrSpaceCastleDonate(154, $g_aiDonatePixel[1]+2) ; when the request is troops+spell
 
 	If $g_iDebugSetlog = 1 Then Setlog("$aCapTroops :" & $aCapTroops, $COLOR_DEBUG)
 	If $g_iDebugSetlog = 1 Then Setlog("$aCapSpells :" & $aCapSpells, $COLOR_DEBUG)
 
 	If Not (StringInStr($aCapTroops, "#") Or StringInStr($aCapSpells, "#")) Then ; verify if the string is valid or it is just a number from request without spell
 		If $g_iDebugSetlog = 1 Then Setlog("Started single getOcrSpaceCastleDonate", $COLOR_DEBUG)
-		$aCapTroops = getOcrSpaceCastleDonate(78, $g_aiDonatePixel[1]) ; when the Request don't have Spell
+		$aCapTroops = getOcrSpaceCastleDonate(78, $g_aiDonatePixel[1]+2) ; when the Request don't have Spell
 
 		If $g_iDebugSetlog = 1 Then Setlog("$aCapTroops :" & $aCapTroops, $COLOR_DEBUG)
 		$aCapSpells = -1

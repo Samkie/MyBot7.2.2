@@ -113,11 +113,10 @@ Func getMyOcr($hHOCRBitmap, $x, $y, $width, $height, $OCRType, $bReturnAsNumber 
 			$sReturn = $sReturn & $aLastResult[$i][0]
 		Next
 	EndIf
-	If $g_iSamM0dDebugOCR = 1 Then SetLog("$sReturn: " & $sReturn, $COLOR_DEBUG)
 
-	If $g_iSamM0dDebugImage Or ($sReturn = "" And $tempOCRType <> "ccrequest") Then
-		Local $Time = @HOUR & "." & @MIN & "." & @SEC
-		_debugSaveHBitmapToImage($hHOCRBitmap, "getMyOcr_" & $OCRType & "_" & $sReturn & "_" & $Time, True)
+	If $g_iSamM0dDebugOCR = 1 Or ($sReturn = "" And $tempOCRType <> "ccrequest") Then
+		SetLog("getMyOcr $sReturn: " & $sReturn, $COLOR_DEBUG)
+		_debugSaveHBitmapToImage($hHOCRBitmap, "getMyOcr_" & $OCRType & "_" & $sReturn & "_", True, True)
 	EndIf
 
 	If $bDeleteHBitmapFlag Then
@@ -206,7 +205,7 @@ Func findMultiImage($hBitmap4Find, $directory, $sCocDiamond, $redLines, $minLeve
 		SetLog("******** findMultiImage *** START ***", $COLOR_ORANGE)
 	EndIf
 
-	If $g_iSamM0dDebugImage And $g_iSamM0dDebugOCR = 0 Then
+	If $g_iSamM0dDebugImage = 1 And $g_iSamM0dDebugOCR = 0 Then
 		Local $Date = @YEAR & "-" & @MON & "-" & @MDAY
 		Local $Time = @HOUR & "." & @MIN & "." & @SEC
 		_debugSaveHBitmapToImage($hBitmap4Find, "findMultiImage_" & $Date & "_" & $Time)

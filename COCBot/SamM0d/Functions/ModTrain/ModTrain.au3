@@ -132,9 +132,9 @@ Func ModTrain($ForcePreTrain = False)
 
 		If $ichkEnableContinueStay = 1 Then
 			If $bIsAttackType Then
-				If $g_iSamM0dDebug Then SetLog("$itxtTrainTimeLeft: " & $itxtTrainTimeLeft)
-				If $g_iSamM0dDebug Then SetLog("$iKTime[0]: " & $iKTime[0])
-				If $g_iSamM0dDebug Then SetLog("Before $bAvoidSwitch: " & $bAvoidSwitch)
+				If $g_iSamM0dDebug = 1 Then SetLog("$itxtTrainTimeLeft: " & $itxtTrainTimeLeft)
+				If $g_iSamM0dDebug = 1 Then SetLog("$iKTime[0]: " & $iKTime[0])
+				If $g_iSamM0dDebug = 1 Then SetLog("Before $bAvoidSwitch: " & $bAvoidSwitch)
 				$bAvoidSwitch = False
 				If $iKTime[0] <= 0 Then
 					$bAvoidSwitch = True
@@ -143,7 +143,7 @@ Func ModTrain($ForcePreTrain = False)
 						$bAvoidSwitch = True
 					EndIf
 				EndIf
-				If $g_iSamM0dDebug Then SetLog("After $bAvoidSwitch: " & $bAvoidSwitch)
+				If $g_iSamM0dDebug = 1 Then SetLog("After $bAvoidSwitch: " & $bAvoidSwitch)
 			EndIf
 		EndIf
 	EndIf
@@ -173,16 +173,16 @@ Func ModTrain($ForcePreTrain = False)
 		$g_bFullArmySpells = ($g_abAttackTypeEnable[$DB] = True And $g_abSearchSpellsWaitEnable[$DB] = False) Or ($g_abAttackTypeEnable[$LB] = True And $g_abSearchSpellsWaitEnable[$LB] = False)
 	EndIf
 
-	If $g_iSamM0dDebug Then SetLog("$g_bfullArmy: " & $g_bfullArmy)
-	If $g_iSamM0dDebug Then SetLog("$g_bFullArmyHero: " & $g_bFullArmyHero)
-	If $g_iSamM0dDebug Then SetLog("$g_bFullArmySpells: " & $g_bFullArmySpells)
-	If $g_iSamM0dDebug Then SetLog("$g_bFullCCSpells: " & $g_bFullCCSpells)
-	If $g_iSamM0dDebug Then SetLog("$FullCCTroops: " & $FullCCTroops)
+	If $g_iSamM0dDebug = 1 Then SetLog("$g_bfullArmy: " & $g_bfullArmy)
+	If $g_iSamM0dDebug = 1 Then SetLog("$g_bFullArmyHero: " & $g_bFullArmyHero)
+	If $g_iSamM0dDebug = 1 Then SetLog("$g_bFullArmySpells: " & $g_bFullArmySpells)
+	If $g_iSamM0dDebug = 1 Then SetLog("$g_bFullCCSpells: " & $g_bFullCCSpells)
+	If $g_iSamM0dDebug = 1 Then SetLog("$FullCCTroops: " & $FullCCTroops)
 
 	If $FullCCTroops = False Or $g_bFullCCSpells = False Then
 		If $ichkEnableMySwitch = 1 Then
 			; If waiting for cc or cc spell, ignore stay to the account, cause you don't know when the cc or spell will be ready.
-			If $g_iSamM0dDebug Then SetLog("Disable Avoid Switch cause of waiting cc or cc spell enable.")
+			If $g_iSamM0dDebug = 1 Then SetLog("Disable Avoid Switch cause of waiting cc or cc spell enable.")
 			$bAvoidSwitch = False
 		EndIf
 	EndIf
@@ -193,7 +193,7 @@ Func ModTrain($ForcePreTrain = False)
 		$g_bIsFullArmywithHeroesAndSpells = False
 	EndIf
 
-	If $g_iSamM0dDebug Then SetLog("$g_bIsFullArmywithHeroesAndSpells: " & $g_bIsFullArmywithHeroesAndSpells)
+	If $g_iSamM0dDebug = 1 Then SetLog("$g_bIsFullArmywithHeroesAndSpells: " & $g_bIsFullArmywithHeroesAndSpells)
 
 EndFunc   ;==>CustomTrain
 
@@ -212,7 +212,7 @@ Func TroopsAndSpellsChecker($bDisableTrain = True, $bDisableBrewSpell = True, $b
 
 		; 预防进入死循环
 		$iCount += 1
-		If $iCount > 5 Then
+		If $iCount > 8 Then
 			ExitLoop
 		EndIf
 
@@ -232,9 +232,83 @@ Func TroopsAndSpellsChecker($bDisableTrain = True, $bDisableBrewSpell = True, $b
 		_CaptureRegion2()
 		$g_hHBitmapArmyTab = GetHHBitmapArea($g_hHBitmap2)
 		;--------------------------------------------------
+
+		$g_hHBitmapSpellCap = GetHHBitmapArea($g_hHBitmapArmyTab,$g_aiSpellCap[0],$g_aiSpellCap[1],$g_aiSpellCap[2],$g_aiSpellCap[3])
+		getMySpellCapacityMini($g_hHBitmapSpellCap)
+		If $bDisableBrewSpell = False Then
+			; reset Global variables
+			For $i = $enumLightning To $enumSkeleton
+				Assign("Cur" & $MySpells[$i][0] & "Spell", 0)
+				Assign("OnQ" & $MySpells[$i][0] & "Spell", 0)
+				Assign("OnT" & $MySpells[$i][0] & "Spell", 0)
+			Next
+
+			If gotoBrewSpells() = False Then ExitLoop
+			If _Sleep(100) Then ExitLoop
+			$iCount2 = 0
+			While IsQueueBlockByMsg($iCount2) ; 检查游戏上的讯息，是否有挡着训练界面， 最多30秒
+				If _Sleep(1000) Then ExitLoop
+				$iCount2 += 1
+				If $iCount2 >= 30 Then
+					ExitLoop
+				EndIf
+			WEnd
+			_CaptureRegion2()
+			$g_hHBitmapBrewTab = GetHHBitmapArea($g_hHBitmap2)
+			$g_hHBitmapBrewCap = GetHHBitmapArea($g_hHBitmapBrewTab,$g_aiBrewCap[0],$g_aiBrewCap[1],$g_aiBrewCap[2],$g_aiBrewCap[3])
+			getBrewSpellCapacityMini($g_hHBitmapBrewCap)
+
+			If $g_aiSpellsMaxCamp[0] = 0 Then
+				DoRevampSpells()
+				If $bForcePreTrain Then
+					ContinueLoop
+				EndIf
+			Else
+				If CheckAvailableSpellUnit($g_hHBitmapArmyTab) Then
+					If CheckOnBrewUnit($g_hHBitmapBrewTab) Then
+						Select
+							Case $g_iSpellFactorySize >= $g_iMySpellsSize And $g_aiSpellsMaxCamp[0] >= $g_iMySpellsSize
+								If $g_bDoPrebrewspell = 0 Then
+									SetLog("Pre-brew spell disable by user.",$COLOR_INFO)
+									$tempDisableBrewSpell = True
+								Else
+									DoRevampSpells(True)
+								EndIf
+							Case $g_iSpellFactorySize < $g_iMySpellsSize And $g_aiSpellsMaxCamp[0] >= $g_iMySpellsSize
+								If $bForcePreTrain Or $ichkForcePreBrewSpell Then
+									If $g_bDoPrebrewspell = 0 Then
+										SetLog("Pre-brew spell disable by user.",$COLOR_INFO)
+										$tempDisableBrewSpell = True
+									Else
+										DoRevampSpells(True)
+									EndIf
+								EndIf
+							Case $g_iSpellFactorySize < $g_iMySpellsSize And $g_aiSpellsMaxCamp[0] < $g_iMySpellsSize
+								DoRevampSpells()
+								If $bForcePreTrain Or $ichkForcePreBrewSpell Then
+									ContinueLoop
+								EndIf
+							Case Else
+								SetLog("Error: cannot meet any condition to Do Revamp Spells.", $COLOR_RED)
+								If $g_iSamM0dDebug = 1 Then
+									SetLog("$g_iSpellFactorySize: " & $g_iSpellFactorySize, $COLOR_RED)
+									SetLog("$g_iMySpellsSize: " & $g_iMySpellsSize, $COLOR_RED)
+									SetLog("$g_aiSpellsMaxCamp[0]: " & $g_aiTroopsMaxCamp[0], $COLOR_RED)
+									SetLog("$g_aiSpellsMaxCamp[1]: " & $g_aiTroopsMaxCamp[1], $COLOR_RED)
+								EndIf
+						EndSelect
+						$bSpellCheckOK = True
+					EndIf
+				EndIf
+			EndIf
+			If $g_bRestartCheckTroop Then ContinueLoop
+		Else
+			$bSpellCheckOK = True
+		EndIf
+
+
 		$g_hHBitmapArmyCap = GetHHBitmapArea($g_hHBitmapArmyTab,$g_aiArmyCap[0],$g_aiArmyCap[1],$g_aiArmyCap[2],$g_aiArmyCap[3])
 		getMyArmyCapacityMini($g_hHBitmapArmyCap)
-
 		If $bDisableTrain = False Then
 			;====Reset the variable======
 			For $i = 0 To UBound($g_avDTtroopsToBeUsed, 1) - 1
@@ -260,7 +334,6 @@ Func TroopsAndSpellsChecker($bDisableTrain = True, $bDisableBrewSpell = True, $b
 			_CaptureRegion2()
 			$g_hHBitmapTrainTab = GetHHBitmapArea($g_hHBitmap2)
 			$g_hHBitmapTrainCap = GetHHBitmapArea($g_hHBitmapTrainTab,$g_aiTrainCap[0],$g_aiTrainCap[1],$g_aiTrainCap[2],$g_aiTrainCap[3])
-
 			getTrainArmyCapacityMini($g_hHBitmapTrainCap)
 
 			If $g_aiTroopsMaxCamp[0] = 0 Then
@@ -343,90 +416,14 @@ Func TroopsAndSpellsChecker($bDisableTrain = True, $bDisableBrewSpell = True, $b
 			$bTroopCheckOK = True
 		EndIf
 
-		$g_hHBitmapSpellCap = GetHHBitmapArea($g_hHBitmapArmyTab,$g_aiSpellCap[0],$g_aiSpellCap[1],$g_aiSpellCap[2],$g_aiSpellCap[3])
-		getMySpellCapacityMini($g_hHBitmapSpellCap)
-
-		If $bDisableBrewSpell = False Then
-			; reset Global variables
-			For $i = $enumLightning To $enumSkeleton
-				Assign("Cur" & $MySpells[$i][0] & "Spell", 0)
-				Assign("OnQ" & $MySpells[$i][0] & "Spell", 0)
-				Assign("OnT" & $MySpells[$i][0] & "Spell", 0)
-			Next
-
-			If gotoBrewSpells() = False Then ExitLoop
-			If _Sleep(100) Then ExitLoop
-			$iCount2 = 0
-			While IsQueueBlockByMsg($iCount2) ; 检查游戏上的讯息，是否有挡着训练界面， 最多30秒
-				If _Sleep(1000) Then ExitLoop
-				$iCount2 += 1
-				If $iCount2 >= 30 Then
-					ExitLoop
-				EndIf
-			WEnd
-			_CaptureRegion2()
-			$g_hHBitmapBrewTab = GetHHBitmapArea($g_hHBitmap2)
-			$g_hHBitmapBrewCap = GetHHBitmapArea($g_hHBitmapBrewTab,$g_aiBrewCap[0],$g_aiBrewCap[1],$g_aiBrewCap[2],$g_aiBrewCap[3])
-
-
-			getBrewSpellCapacityMini($g_hHBitmapBrewCap)
-
-			If $g_aiSpellsMaxCamp[0] = 0 Then
-				DoRevampSpells()
-				If $bForcePreTrain Then
-					ContinueLoop
-				EndIf
-			Else
-				If CheckAvailableSpellUnit($g_hHBitmapArmyTab) Then
-					If CheckOnBrewUnit($g_hHBitmapBrewTab) Then
-						Select
-							Case $g_iSpellFactorySize >= $g_iMySpellsSize And $g_aiSpellsMaxCamp[0] >= $g_iMySpellsSize
-								If $g_bDoPrebrewspell = 0 Then
-									SetLog("Pre-brew spell disable by user.",$COLOR_INFO)
-									$tempDisableBrewSpell = True
-								Else
-									DoRevampSpells(True)
-								EndIf
-							Case $g_iSpellFactorySize < $g_iMySpellsSize And $g_aiSpellsMaxCamp[0] >= $g_iMySpellsSize
-								If $bForcePreTrain Or $ichkForcePreBrewSpell Then
-									If $g_bDoPrebrewspell = 0 Then
-										SetLog("Pre-brew spell disable by user.",$COLOR_INFO)
-										$tempDisableBrewSpell = True
-									Else
-										DoRevampSpells(True)
-									EndIf
-								EndIf
-							Case $g_iSpellFactorySize < $g_iMySpellsSize And $g_aiSpellsMaxCamp[0] < $g_iMySpellsSize
-								DoRevampSpells()
-								If $bForcePreTrain Or $ichkForcePreBrewSpell Then
-									ContinueLoop
-								EndIf
-							Case Else
-								SetLog("Error: cannot meet any condition to Do Revamp Spells.", $COLOR_RED)
-								If $g_iSamM0dDebug = 1 Then
-									SetLog("$g_iSpellFactorySize: " & $g_iSpellFactorySize, $COLOR_RED)
-									SetLog("$g_iMySpellsSize: " & $g_iMySpellsSize, $COLOR_RED)
-									SetLog("$g_aiSpellsMaxCamp[0]: " & $g_aiTroopsMaxCamp[0], $COLOR_RED)
-									SetLog("$g_aiSpellsMaxCamp[1]: " & $g_aiTroopsMaxCamp[1], $COLOR_RED)
-								EndIf
-						EndSelect
-						$bSpellCheckOK = True
-					EndIf
-				EndIf
-			EndIf
-			If $g_bRestartCheckTroop Then ContinueLoop
-		Else
-			$bSpellCheckOK = True
-		EndIf
-
 		If $bTroopCheckOK And $bSpellCheckOK Then ExitLoop
 	WEnd
 
-	If $g_iSamM0dDebugImage Then SaveAndDebugTrainImage()
+	If $g_iSamM0dDebugImage = 1 Then SaveAndDebugTrainImage()
 
 	DeleteTrainHBitmap()
 
-	If $g_iSamM0dDebug Then SetLog("$hTimer: " & Round(__TimerDiff($hTimer) / 1000, 2))
+	If $g_iSamM0dDebug = 1 Then SetLog("$hTimer: " & Round(__TimerDiff($hTimer) / 1000, 2))
 EndFunc
 
 Func IsQueueBlockByMsg($iCount)

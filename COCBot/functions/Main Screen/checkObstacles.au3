@@ -192,8 +192,16 @@ Func _checkObstacles() ;Checks if something is in the way for mainscreen
 	If _ColorCheck(_GetPixelColor(160, 380,$g_bNoCapturePixel), Hex(0xFFFFFF, 6),5) And _ColorCheck(_GetPixelColor(699, 380,$g_bNoCapturePixel), Hex(0xFFFFFF, 6),5) Then
 		AndroidBackButton()
 		$g_bMinorObstacle = True
-		If _Sleep(1000) Then Return
+		If _Sleep(1000) Then Return False
 		Return False
+	EndIf
+
+	If _ColorCheck(_GetPixelColor(402, 516, $g_bNoCapturePixel), Hex(0xFFFFFF, 6), 5) And _ColorCheck(_GetPixelColor(405, 537, $g_bNoCapturePixel), Hex(0x5EAC10, 6), 20) Then
+		Click($aButtonVillageWasAttackOK[0],$aButtonVillageWasAttackOK[1],1,0,"#VWAO")
+		$g_bMinorObstacle = True
+		If _Sleep(1000) Then Return False
+		Return False
+		;Return True ;  village was attacked okay button
 	EndIf
 
 	If $bNowWaitingConfirm = False Then
@@ -201,20 +209,10 @@ Func _checkObstacles() ;Checks if something is in the way for mainscreen
 			_ColorCheck(_GetPixelColor($aButtonVillageLoad[4], $aButtonVillageLoad[5],$g_bNoCapturePixel), Hex($aButtonVillageLoad[6], 6), $aButtonVillageLoad[7]) Then
 			Click($aButtonVillageCancel[0],$aButtonVillageCancel[1],1,0,"#VL01")
 			$g_bMinorObstacle = True
-			If _Sleep(500) Then Return
+			If _Sleep(500) Then Return False
 			Return False
 		EndIf
 	EndIf
-
-
-	; KunLun Version un click verify for real name
-;~ 	If _ColorCheck(_GetPixelColor(550, 400,$g_bNoCapturePixel), Hex(0xFFBB34, 6),5) And _ColorCheck(_GetPixelColor(450, 400,$g_bNoCapturePixel), Hex(0xFFBB34, 6),5) And _
-;~ 	_ColorCheck(_GetPixelColor(310, 400,$g_bNoCapturePixel), Hex(0xFFFFFF, 6),5) And _ColorCheck(_GetPixelColor(400, 400,$g_bNoCapturePixel), Hex(0xFFFFFF, 6),5) Then
-;~ 		Click(Random(340,380,1),Random(400,415,1),1,0,"#KUNC")
-;~ 		$g_bMinorObstacle = True
-;~ 		If _Sleep(500) Then Return
-;~ 		Return False
-;~ 	EndIf
 
 	; prevent close train page failed, and get builder failed
 	If _CheckPixel($aIsTrainPgChk1, $g_bNoCapturePixel) Then

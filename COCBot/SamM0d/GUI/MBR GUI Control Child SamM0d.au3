@@ -36,7 +36,7 @@ Func UpdateTroopSetting()
 		$MyTroops[$i][3] =  $MyTroopsSetting[$icmbTroopSetting][$i][0]
 	Next
 	UpdateTroopSize()
-	If $g_iSamM0dDebug Then SetLog("$g_iMyTroopsSize: " & $g_iMyTroopsSize)
+	If $g_iSamM0dDebug = 1 Then SetLog("$g_iMyTroopsSize: " & $g_iMyTroopsSize)
 EndFunc
 
 Func UpdateTroopSize()
@@ -136,7 +136,7 @@ Func UpdateSpellSetting()
 		GUICtrlSetBkColor($txtNumHasteSpell, $COLOR_RED)
 		GUICtrlSetBkColor($txtNumSkeletonSpell, $COLOR_RED)
 	EndIf
-	If $g_iSamM0dDebug Then SetLog("$g_iMySpellsSize: " & $g_iMySpellsSize)
+	If $g_iSamM0dDebug = 1 Then SetLog("$g_iMySpellsSize: " & $g_iMySpellsSize)
 EndFunc
 
 Func chkDisablePretrainTroops()
@@ -417,7 +417,7 @@ Func lblMyTotalCountSpell()
 	If $g_iTownHallLevel > 9 Or $g_iTownHallLevel = 0 Then
 		_GUI_Value_STATE("SHOW", $groupMyClone)
 	EndIf
-	If $g_iSamM0dDebug Then SetLog("$g_iMySpellsSize: " & $g_iMySpellsSize)
+	If $g_iSamM0dDebug = 1 Then SetLog("$g_iMySpellsSize: " & $g_iMySpellsSize)
 
 EndFunc   ;==>lblTotalCountSpell
 

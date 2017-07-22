@@ -185,7 +185,7 @@ Func CheckAvailableCCUnit()
 
 		ExitLoop
 	WEnd
-	If $g_iSamM0dDebugImage Then
+	If $g_iSamM0dDebugImage = 1 Then
 		_debugSaveHBitmapToImage($g_hHBitmap_Av_CC_Slot1, "ArmyTab_CCTroop_Slot1")
 		_debugSaveHBitmapToImage($g_hHBitmap_Av_CC_Slot2, "ArmyTab_CCTroop_Slot2")
 		_debugSaveHBitmapToImage($g_hHBitmap_Av_CC_Slot3, "ArmyTab_CCTroop_Slot3")

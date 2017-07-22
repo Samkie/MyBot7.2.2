@@ -383,7 +383,7 @@ Func FriendlyChallenge()
 			For $i = 0 To $iMax
 				$aPropsValues = $result[$i] ; should be return objectname,objectpoints,objectlevel
 				If UBound($aPropsValues) = 1 then
-					If $g_iSamM0dDebug Then SetLog("$aPropsValues[0]: " & $aPropsValues[0], $COLOR_DEBUG)
+					If $g_iSamM0dDebug = 1 Then SetLog("$aPropsValues[0]: " & $aPropsValues[0], $COLOR_DEBUG)
 					$aCoor = StringSplit($aPropsValues[0],"|",$STR_NOCOUNT) ; objectpoints, split by "|" to get multi coor x,y ; same image maybe can detect at different location.
 					If IsArray($aCoor) Then
 						For $j =  0 to UBound($aCoor) - 1
@@ -399,12 +399,12 @@ Func FriendlyChallenge()
 			If $iCount >= 1 Then
 				_ArraySort($aLastResult, 1, 0, 0, 1) ; rearrange order by coor Y
 				$iMax = UBound($aLastResult) -1
-				If $g_iSamM0dDebug Then SetLog("Total Chat Message: " & $iMax + 1, $COLOR_ERROR)
+				If $g_iSamM0dDebug = 1 Then SetLog("Total Chat Message: " & $iMax + 1, $COLOR_ERROR)
 				_CaptureRegion2(0,0,287,732)
 				For $i = 0 To $iMax
 					If $g_bChkExtraAlphabets Then
 						; Chat Request using "coc-latin-cyr" xml: Latin + Cyrillic derived alphabets / three paragraphs
-						If $g_iSamM0dDebug Then Setlog("Using OCR to read Latin and Cyrillic derived alphabets..", $COLOR_ACTION)
+						If $g_iSamM0dDebug = 1 Then Setlog("Using OCR to read Latin and Cyrillic derived alphabets..", $COLOR_ACTION)
 						$ClanString = ""
 						$ClanString = getOcrAndCapture("coc-latin-cyr", 30, $aLastResult[$i][1] + 17, 280, 17, Default, Default, False)
 						If $ClanString = "" Then
@@ -420,7 +420,7 @@ Func FriendlyChallenge()
 						If _Sleep($DELAYDONATECC2) Then ExitLoop
 					Else ; default
 						; Chat Request using "coc-latinA" xml: only Latin derived alphabets / three paragraphs
-						If $g_iSamM0dDebug Then Setlog("Using OCR to read Latin derived alphabets..", $COLOR_ACTION)
+						If $g_iSamM0dDebug = 1 Then Setlog("Using OCR to read Latin derived alphabets..", $COLOR_ACTION)
 						$ClanString = ""
 						$ClanString = getOcrAndCapture("coc-latinA", 30, $aLastResult[$i][1] + 17, 280, 17, Default, Default, False)
 						If $ClanString = "" Then
@@ -437,7 +437,7 @@ Func FriendlyChallenge()
 					EndIf
 					; Chat Request using IMGLOC: Chinese alphabet / one paragraph
 					If $g_bChkExtraChinese Then
-						If $g_iSamM0dDebug Then Setlog("Using OCR to read the Chinese alphabet..", $COLOR_ACTION)
+						If $g_iSamM0dDebug = 1 Then Setlog("Using OCR to read the Chinese alphabet..", $COLOR_ACTION)
 						If $ClanString = "" Then
 							$ClanString = getOcrAndCapture("chinese-bundle", 30, $aLastResult[$i][1] + 43, 160, 15, Default, True, False)
 						Else
@@ -447,7 +447,7 @@ Func FriendlyChallenge()
 					EndIf
 					; Chat Request using IMGLOC: Korean alphabet / one paragraph
 					If $g_bChkExtraKorean Then
-						If $g_iSamM0dDebug Then Setlog("Using OCR to read the Korean alphabet..", $COLOR_ACTION)
+						If $g_iSamM0dDebug = 1 Then Setlog("Using OCR to read the Korean alphabet..", $COLOR_ACTION)
 						If $ClanString = "" Then
 							$ClanString = getOcrAndCapture("korean-bundle", 30, $aLastResult[$i][1] + 43, 160, 15, Default, True, False)
 						Else
@@ -457,7 +457,7 @@ Func FriendlyChallenge()
 					EndIf
 					; Chat Request using IMGLOC: Persian alphabet / one paragraph
 					If $g_bChkExtraPersian Then
-						If $g_iSamM0dDebug Then Setlog("Using OCR to read the Persian alphabet..", $COLOR_ACTION)
+						If $g_iSamM0dDebug = 1 Then Setlog("Using OCR to read the Persian alphabet..", $COLOR_ACTION)
 						If $ClanString = "" Then
 							$ClanString = getChatStringPersianMod(30, $aLastResult[$i][1] + 36)
 						Else
@@ -466,7 +466,7 @@ Func FriendlyChallenge()
 						If _Sleep($DELAYDONATECC2) Then ExitLoop
 					EndIf
 					If $ichkEnableCustomOCR4CCRequest = 1 Then
-						If $g_iSamM0dDebug Then Setlog("Using custom OCR to read cc request message..", $COLOR_ACTION)
+						If $g_iSamM0dDebug = 1 Then Setlog("Using custom OCR to read cc request message..", $COLOR_ACTION)
 						Local $hHBitmapCustomOCR = GetHHBitmapArea($g_hHBitmap2,30, $aLastResult[$i][1] + 43, 190, $aLastResult[$i][1] + 43 + 15)
 						If $ClanString = "" Then
 							$ClanString = getMyOcr($hHBitmapCustomOCR, 30, $aLastResult[$i][1] + 43,160,15,"ccrequest",False,True)
@@ -478,7 +478,7 @@ Func FriendlyChallenge()
 					EndIf
 
 					If $ClanString = "" Or $ClanString = " " Then
-						If $g_iSamM0dDebug Then SetLog("Unable to read Chat!", $COLOR_ERROR)
+						If $g_iSamM0dDebug = 1 Then SetLog("Unable to read Chat!", $COLOR_ERROR)
 					Else
 						SetLog("Chat: " & $ClanString)
 						Local $asFCKeyword = StringSplit($stxtKeywordForRequest, @CRLF, $STR_ENTIRESPLIT)
@@ -504,7 +504,7 @@ Func FriendlyChallenge()
 				Next
 			EndIf
 		Else
-			If $g_iSamM0dDebug Then SetLog("divide not found.", $COLOR_DEBUG)
+			If $g_iSamM0dDebug = 1 Then SetLog("divide not found.", $COLOR_DEBUG)
 		EndIf
 		If $g_hHBitmap2 <> 0 Then GdiDeleteHBitmap($g_hHBitmap2)
 	EndIf

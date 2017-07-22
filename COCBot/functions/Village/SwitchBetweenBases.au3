@@ -47,7 +47,7 @@ Func SwitchBetweenBases()
 			WEnd
 			If $iCount < 4 Then
 				SetLog("Successfully went back to the normal Village!", $COLOR_SUCCESS)
-				checkMainScreen(True, False)
+				checkMainScreen(False, False)
 				Return True
 			Else
 				SetLog("Failed to go back to the normal Village!", $COLOR_ERROR)
@@ -61,7 +61,7 @@ Func SwitchBetweenBases()
 			WEnd
 			If $iCount < 4 Then
 				SetLog("Successfully went to the Builder Base!", $COLOR_SUCCESS)
-				checkMainScreen(True, True)
+				checkMainScreen(False, True)
 				Return True
 			Else
 				SetLog("Failed to go to the Builder Base!", $COLOR_ERROR)

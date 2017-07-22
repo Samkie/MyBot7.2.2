@@ -16,7 +16,7 @@ Global $aCenterHomeVillageClickDrag = [160, 665] ; Scroll village using this loc
 Global $aIsReloadError[4] = [457, 301 + $g_iMidOffsetY, 0x33B5E5, 10] ; Pixel Search Check point For All Reload Button errors, except break ending
 ;Global $aIsMain[4] = [284, 28, 0x41B1CD, 20] ; Main Screen, Builder Left Eye
 ;Global $aIsMain[4] = [284, 29, 0x1C4466, 20] ; Main Screen, Builder Left Eye :SC_okt
-;~ ; samm0d - tolerance 20 change to 6
+;~ ; samm0d - tolerance 20 change to 6 - cause of MEnu background color same with
 Global $aIsMain[4] = [284, 29, 0x1C4466, 6] ; Main Screen, Builder Left Eye :SC_okt
 
 Global $aIsDPI125[4] = [355, 35, 0x399CB8, 15] ; Main Screen, Builder Left Eye, DPI set to 125%

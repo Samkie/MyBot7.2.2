@@ -649,7 +649,7 @@ Func runBot() ;Bot that runs everything in order
 
 	While 1
 		; samm0d
-		If $g_iSamM0dDebug And $g_bRestart Then SetLog("Continue loop with restart", $COLOR_DEBUG)
+		If $g_iSamM0dDebug = 1 And $g_bRestart Then SetLog("Continue loop with restart", $COLOR_DEBUG)
 		If $ichkAutoDock = 1 Then
 			If $g_bAndroidEmbedded = False Then
 				btnEmbed()
@@ -689,7 +689,7 @@ Func runBot() ;Bot that runs everything in order
 
 		; samm0d switch
 		If $ichkEnableMySwitch Then
-			If $g_iSamM0dDebug Then SetLog("$bAvoidSwitch: " & $bAvoidSwitch)
+			If $g_iSamM0dDebug = 1 Then SetLog("$bAvoidSwitch: " & $bAvoidSwitch)
 			$bUpdateStats = True
 			If $g_bIsClientSyncError = False And $g_bIsSearchLimit = False And ($g_bQuickAttack = False) Then
 				DoSwitchAcc()

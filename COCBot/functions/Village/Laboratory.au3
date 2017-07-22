@@ -209,7 +209,8 @@ Func Laboratory()
 		If _Sleep($DELAYLABORATORY2) Then Return
 		; upgrade in process and time not recorded?  Then update completion time!
 		If $g_sLabUpgradeTime = "" Or $TimeDiff <= 0 Then
-			$Result = getRemainTLaboratory(282, 277) ; Try to read white text showing actual time left for upgrade
+			; samm0d
+			$Result = getRemainTLaboratory(294, 270) ; Try to read white text showing actual time left for upgrade
 			If $g_iDebugSetlog = 1 Then Setlog($g_avLabTroops[$g_iCmbLaboratory][3] & " OCR Remaining Lab Time = " & $Result, $COLOR_DEBUG)
 			$aArray = StringSplit($Result, ' ', BitOR($STR_CHRSPLIT, $STR_NOCOUNT)) ;separate days, hours, minutes, seconds
 			If IsArray($aArray) Then

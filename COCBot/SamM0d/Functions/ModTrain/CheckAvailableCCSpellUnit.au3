@@ -224,7 +224,7 @@ Func CheckAvailableCCSpellUnit()
 		EndIf
 		ExitLoop
 	WEnd
-	If $g_iSamM0dDebugImage Then
+	If $g_iSamM0dDebugImage = 1 Then
 		_debugSaveHBitmapToImage($g_hHBitmap_Av_CC_Spell_Slot1, "ArmyTab_CCSpell_Slot1")
 		_debugSaveHBitmapToImage($g_hHBitmap_Av_CC_Spell_Slot2, "ArmyTab_CCSpell_Slot2")
 		_debugSaveHBitmapToImage($g_hHBitmap_Av_CC_Spell_SlotQty1, "ArmyTab_CCSpell_NoUnit_Slot1")
