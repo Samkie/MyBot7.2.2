@@ -285,7 +285,7 @@ Func CheckOnTrainUnit($hHBitmap)
 				If $iOnQueueCamp <> $iMyTroopsCampSize Then
 					SetLog("Error: Pre-Train Troops size not correct.", $COLOR_ERROR)
 					SetLog("Error: Detected Pre-Train Troops size = " & $iOnQueueCamp & ", My Troops size = " & $iMyTroopsCampSize, $COLOR_ERROR)
-					If gotoBrewSpells() = False Then Return
+					If gotoTrainTroops() = False Then Return
 					RemoveAllPreTrainTroops()
 					$g_bRestartCheckTroop = True
 					Return False

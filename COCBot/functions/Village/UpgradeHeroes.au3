@@ -174,7 +174,9 @@ Func QueenUpgrade()
 		Click($ButtonPixel[0] + 20, $ButtonPixel[1] + 20, 1, 0, "#0305") ; Click Upgrade Button
 		If _Sleep($DELAYUPGRADEHERO3) Then Return ; Wait for window to open
 		If $g_iDebugImageSave = 1 Then DebugImageSave("UpgradeDarkBtn1")
-		If _ColorCheck(_GetPixelColor(721, 118 + $g_iMidOffsetY, True), Hex(0xE00408, 6), 20) Then ; Check if the Hero Upgrade window is open
+		; samm0d
+		If _ColorCheck(_GetPixelColor(740, 560, True), Hex(0XE8E8E0, 6), 20) Then ; Check if the Hero Upgrade window is open
+		;If _ColorCheck(_GetPixelColor(721, 118 + $g_iMidOffsetY, True), Hex(0xE00408, 6), 20) Then ; Check if the Hero Upgrade window is open
 			If _ColorCheck(_GetPixelColor(691, 523 + $g_iMidOffsetY, True), Hex(0xE70A12, 6), 20) And _ColorCheck(_GetPixelColor(691, 527 + $g_iMidOffsetY), Hex(0xE70A12, 6), 20) And _
 					_ColorCheck(_GetPixelColor(691, 531 + $g_iMidOffsetY, True), Hex(0xE70A12, 6), 20) Then ; Check for Red Zero = means not enough loot!
 				SetLog("Queen Upgrade Fail! No DE!", $COLOR_ERROR)

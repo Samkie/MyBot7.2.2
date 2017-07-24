@@ -211,7 +211,9 @@ Func DoMyQuickTrain($MyTrainArmy)
 				$aButtonTemp = $aButtonTrainArmy3
 		EndSwitch
 		If _Sleep(200) Then Return
-		If _ColorCheck(_GetPixelColor($aButtonTemp[4], $aButtonTemp[5], True), Hex($aButtonTemp[6], 6), $aButtonTemp[7]) Then
+		ForceCaptureRegion()
+		_CaptureRegion()
+		If _ColorCheck(_GetPixelColor($aButtonTemp[4], $aButtonTemp[5], False), Hex($aButtonTemp[6], 6), $aButtonTemp[7]) Then
 			Local $x, $y
 			HMLClickPR($aButtonTemp, $x, $y)
 			HMLClick($x, $y)
@@ -221,12 +223,16 @@ Func DoMyQuickTrain($MyTrainArmy)
 			EndIf
 			If _Sleep(200) Then Return
 		Else
-			SetLog("Failed to locate quick train army " & $MyTrainArmy & " button.", $COLOR_ERROR)
-			SetLog("Try using custom train for train troops.", $COLOR_ERROR)
-			If $g_CurrentCampUtilization <> 0 And $g_CurrentCampUtilization < $g_iTotalCampSpace Then
-				DoRevampTroops()
-			ElseIf $g_aiTroopsMaxCamp[0] > Int((($g_aiTroopsMaxCamp[1] / 2) * $g_iTrainArmyFullTroopPct) / 100) And $g_iTrainArmyFullTroopPct = 100 Then
-				DoRevampTroops(True)
+			If _ColorCheck(_GetPixelColor(50, $aButtonTemp[5], False), Hex(0XD3D3CB, 6), 6) Then
+				Return
+			Else
+				SetLog("Failed to locate quick train army " & $MyTrainArmy & " button.", $COLOR_ERROR)
+				SetLog("Try using custom train for train troops.", $COLOR_ERROR)
+				If $g_CurrentCampUtilization <> 0 And $g_CurrentCampUtilization < $g_iTotalCampSpace Then
+					DoRevampTroops()
+				ElseIf $g_aiTroopsMaxCamp[0] > Int((($g_aiTroopsMaxCamp[1] / 2) * $g_iTrainArmyFullTroopPct) / 100) And $g_iTrainArmyFullTroopPct = 100 Then
+					DoRevampTroops(True)
+				EndIf
 			EndIf
 		EndIf
 	Else

@@ -361,6 +361,10 @@ Func TroopsAndSpellsChecker($bDisableTrain = True, $bDisableBrewSpell = True, $b
 									Else
 										DoRevampTroops(True)
 									EndIf
+								ElseIf $icmbMyQuickTrain = 4 Then
+									DoMyQuickTrain(1)
+									DoMyQuickTrain(2)
+									DoMyQuickTrain(3)
 								Else
 									DoMyQuickTrain($icmbMyQuickTrain)
 								EndIf
@@ -389,6 +393,10 @@ Func TroopsAndSpellsChecker($bDisableTrain = True, $bDisableBrewSpell = True, $b
 										Else
 											DoRevampTroops(True)
 										EndIf
+									ElseIf $icmbMyQuickTrain = 4 Then
+										DoMyQuickTrain(1)
+										DoMyQuickTrain(2)
+										DoMyQuickTrain(3)
 									Else
 										DoMyQuickTrain($icmbMyQuickTrain)
 									EndIf

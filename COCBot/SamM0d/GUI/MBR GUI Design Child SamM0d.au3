@@ -331,7 +331,7 @@ Local $x = $xStart, $y = $yStart
 
 $lblMyQuickTrain = GUICtrlCreateLabel(GetTranslatedFileIni("sam m0d", 98, "Train Combo: "), $x + 220, $y + 25, -1, -1,$SS_RIGHT)
 $cmbMyQuickTrain = GUICtrlCreateCombo("", $x+300, $y+20, 130, 20, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
-		GUICtrlSetData(-1, GetTranslatedFileIni("sam m0d", 99, "Custom Mode Only") & "|" & GetTranslatedFileIni("sam m0d", 100, "Custom + Army 1") & "|" & GetTranslatedFileIni("sam m0d", 101, "Custom + Army 2") & "|" & GetTranslatedFileIni("sam m0d", 102, "Custom + Army 3"),GetTranslatedFileIni("sam m0d", 99, "Custom Mode Only"))
+		GUICtrlSetData(-1, GetTranslatedFileIni("sam m0d", 99, "Custom Mode Only") & "|" & GetTranslatedFileIni("sam m0d", 100, "Custom + Army 1") & "|" & GetTranslatedFileIni("sam m0d", 101, "Custom + Army 2") & "|" & GetTranslatedFileIni("sam m0d", 102, "Custom + Army 3") & "|" & GetTranslatedFileIni("sam m0d", "Custom And Army 1,2,3", "Custom + Army 1,2,3"),GetTranslatedFileIni("sam m0d", 99, "Custom Mode Only"))
 		$sTxtTip = GetTranslatedFileIni("sam m0d", 103, "Use quick train to train army, custom train setting to revamp donated troops.")
 		_GUICtrlSetTip(-1, $sTxtTip)
 		GUICtrlSetOnEvent(-1, "cmbMyQuickTrain")
