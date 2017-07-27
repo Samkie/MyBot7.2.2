@@ -833,9 +833,9 @@ $chkEnableLogoutLimit = GUICtrlCreateCheckbox(GetTranslatedFileIni("sam m0d", "L
 _GUICtrlSetTip(-1, GetTranslatedFileIni("sam m0d", "LogoutLimitTips", "Maximum logout time for smart wait for train, prevent attack by other player."))
 	GUICtrlSetOnEvent(-1, "chkEnableLogoutLimit")
 
-$txtLogoutLimitTime = GUICtrlCreateInput("8", $x + 300, $y+2, 35, 20, BitOR($GUI_SS_DEFAULT_INPUT, $ES_CENTER, $ES_NUMBER))
+$txtLogoutLimitTime = GUICtrlCreateInput("240", $x + 300, $y+2, 35, 20, BitOR($GUI_SS_DEFAULT_INPUT, $ES_CENTER, $ES_NUMBER))
 	_GUICtrlSetTip(-1, GetTranslatedFileIni("sam m0d", "LogoutLimitTime", "Please enter how many seconds for maximum logout time."))
-	GUICtrlSetLimit(-1, 2)
+	GUICtrlSetLimit(-1, 4)
 	GUICtrlSetOnEvent(-1, "txtLogoutLimitTime")
 
 ;~ $y += 25
