@@ -12,6 +12,36 @@
 ; Link ..........: https://github.com/MyBotRun/MyBot/wiki
 ; Example .......: No
 
+Global $sTxtBarbarians = GetTranslatedFileIni("MBR Global GUI Design Names Troops", "TxtBarbarians", "Barbarians")
+Global $sTxtArchers = GetTranslatedFileIni("MBR Global GUI Design Names Troops", "TxtArchers", "Archers")
+Global $sTxtGiants = GetTranslatedFileIni("MBR Global GUI Design Names Troops", "TxtGiants", "Giants")
+Global $sTxtGoblins = GetTranslatedFileIni("MBR Global GUI Design Names Troops", "TxtGoblins", "Goblins")
+Global $sTxtWallBreakers = GetTranslatedFileIni("MBR Global GUI Design Names Troops", "TxtWallBreakers", "Wall Breakers")
+Global $sTxtBalloons = GetTranslatedFileIni("MBR Global GUI Design Names Troops", "TxtBalloons", "Balloons")
+Global $sTxtWizards = GetTranslatedFileIni("MBR Global GUI Design Names Troops", "TxtWizards", "Wizards")
+Global $sTxtHealers = GetTranslatedFileIni("MBR Global GUI Design Names Troops", "TxtHealers", "Healers")
+Global $sTxtDragons = GetTranslatedFileIni("MBR Global GUI Design Names Troops", "TxtDragons", "Dragons")
+Global $sTxtPekkas = GetTranslatedFileIni("MBR Global GUI Design Names Troops", "TxtPekkas", "Pekkas")
+Global $sTxtMinions = GetTranslatedFileIni("MBR Global GUI Design Names Troops", "TxtMinions", "Minions")
+Global $sTxtHogRiders = GetTranslatedFileIni("MBR Global GUI Design Names Troops", "TxtHogRiders", "Hog Riders")
+Global $sTxtValkyries = GetTranslatedFileIni("MBR Global GUI Design Names Troops", "TxtValkyries", "Valkyries")
+Global $sTxtGolems = GetTranslatedFileIni("MBR Global GUI Design Names Troops", "TxtGolems", "Golems")
+Global $sTxtWitches = GetTranslatedFileIni("MBR Global GUI Design Names Troops", "TxtWitches", "Witches")
+Global $sTxtLavaHounds = GetTranslatedFileIni("MBR Global GUI Design Names Troops", "TxtLavaHounds", "Lava Hounds")
+Global $sTxtBowlers = GetTranslatedFileIni("MBR Global GUI Design Names Troops", "TxtBowlers", "Bowlers")
+Global $sTxtBabyDragons = GetTranslatedFileIni("MBR Global GUI Design Names Troops", "TxtBabyDragons", "Baby Dragons")
+Global $sTxtMiners = GetTranslatedFileIni("MBR Global GUI Design Names Troops", "TxtMiners", "Miners")
+Global $sTxtLightningSpells = GetTranslatedFileIni("MBR Global GUI Design Names Spells", "TxtShortLightningSpells", "Lightning")
+Global $sTxtHealSpells = GetTranslatedFileIni("MBR Global GUI Design Names Spells", "TxtShortHealSpells", "Heal")
+Global $sTxtRageSpells = GetTranslatedFileIni("MBR Global GUI Design Names Spells", "TxtShortRageSpells", "Rage")
+Global $sTxtJumpSpells = GetTranslatedFileIni("MBR Global GUI Design Names Spells", "TxtShortJumpSpells", "Jump")
+Global $sTxtFreezeSpells = GetTranslatedFileIni("MBR Global GUI Design Names Spells", "TxtShortFreezeSpells", "Freeze")
+Global $sTxtCloneSpells = GetTranslatedFileIni("MBR Global GUI Design Names Spells", "TxtShortCloneSpells", "Clone")
+Global $sTxtPoisonSpells = GetTranslatedFileIni("MBR Global GUI Design Names Spells", "TxtShortPoisonSpells", "Poison")
+Global $sTxtEarthquakeSpells = GetTranslatedFileIni("MBR Global GUI Design Names Spells", "TxtShortEarthquakeSpells", "EarthQuake")
+Global $sTxtHasteSpells = GetTranslatedFileIni("MBR Global GUI Design Names Spells", "TxtShortHasteSpells", "Haste")
+Global $sTxtSkeletonSpells = GetTranslatedFileIni("MBR Global GUI Design Names Spells", "TxtShortSkeletonSpells", "Skeleton")
+
 Global $hGUI_MOD = 0
 Local $sTxtTip
 
@@ -35,32 +65,42 @@ $grpSmartZap = GUICtrlCreateGroup(GetTranslatedFileIni("sam m0d", 1, "Zap"), $x,
 
 ;$lblZapMethod = GUICtrlCreateLabel(GetTranslatedFileIni("sam m0d", 2, "Zap Style: "), $x + 40, $y + 20, -1, -1)
 
-$chkUseSamM0dZap = GUICtrlCreateCheckbox(GetTranslatedFileIni("sam m0d", 2, "Use SamM0d Zap "), $x + 40, $y + 20, -1, -1)
+$y += 20
+$chkUseSamM0dZap = GUICtrlCreateCheckbox(GetTranslatedFileIni("sam m0d", 2, "Use SamM0d Zap "), $x + 40, $y, -1, -1)
 	$sTxtTip = "Select this to drop lightning spells on Dark Elixir Drills with SamM0d Method." & @CRLF & @CRLF & _
 	"First zap higher level drill first, then second zap the drill that get higher DE from last zap."
 	_GUICtrlSetTip(-1, $sTxtTip)
 	GUICtrlSetOnEvent(-1, "cmbZapMethod")
 	GUICtrlSetState(-1, $GUI_CHECKED)
 
-$y -= 20
-
-$lblMinDark2 = GUICtrlCreateLabel(GetTranslatedFileIni("sam m0d", 3, "Min. amount of Dark Elixir:"), $x + 30, $y + 70, 160, -1, $SS_RIGHT)
-
-$txtMinDark2 = GUICtrlCreateInput("400", $x + 195, $y + 70, 35, 20, BitOR($GUI_SS_DEFAULT_INPUT, $ES_CENTER, $ES_NUMBER))
+$y += 25
+$lblMinDark2 = GUICtrlCreateLabel(GetTranslatedFileIni("sam m0d", 3, "Min. amount of Dark Elixir:"), $x + 30, $y, 160, -1, $SS_RIGHT)
+$txtMinDark2 = GUICtrlCreateInput("400", $x + 195, $y, 35, 20, BitOR($GUI_SS_DEFAULT_INPUT, $ES_CENTER, $ES_NUMBER))
 	$sTxtTip = "The value here depends a lot on what level your Town Hall is, " & @CRLF & _
 			  "and what level drills you most often see."
 	_GUICtrlSetTip(-1, $sTxtTip)
 	GUICtrlSetLimit(-1, 4)
 	GUICtrlSetOnEvent(-1, "txtMinDark2")
 
-$chkSmartZapDB2 = GUICtrlCreateCheckbox(GetTranslatedFileIni("sam m0d", 4, "Only Zap Drills in Dead Bases"), $x + 40, $y + 95, -1, -1)
+$y += 25
+$lblMinDEGetFromDrill = GUICtrlCreateLabel(GetTranslatedFileIni("sam m0d", 9, "Min. DE from each Drill:"), $x + 30, $y, 160, -1, $SS_RIGHT)
+$txtMinDEGetFromDrill = GUICtrlCreateInput("120", $x + 195, $y, 35, 20, BitOR($GUI_SS_DEFAULT_INPUT, $ES_CENTER, $ES_NUMBER))
+	$sTxtTip = "After perform zap will check how many DE gain from this drill," & @CRLF & _
+			  "If the value lower than this setting, this drill will be ignore for zap again."
+	_GUICtrlSetTip(-1, $sTxtTip)
+	GUICtrlSetLimit(-1, 4)
+	GUICtrlSetOnEvent(-1, "txtMinDEGetFromDrill")
+
+$y += 35
+$chkSmartZapDB2 = GUICtrlCreateCheckbox(GetTranslatedFileIni("sam m0d", 4, "Only Zap Drills in Dead Bases"), $x + 40, $y, -1, -1)
 	$sTxtTip = "It is recommended you only zap drills in dead bases as most of the " & @CRLF & _
 			  "Dark Elixir in a live base will be in the storage."
 	_GUICtrlSetTip(-1, $sTxtTip)
 	GUICtrlSetOnEvent(-1, "chkSmartZapDB2")
 	GUICtrlSetState(-1, $GUI_CHECKED)
 
-$chkSmartZapSaveHeroes2 = GUICtrlCreateCheckbox(GetTranslatedFileIni("sam m0d", 5, "TH snipe NoZap if Heroes Deployed"), $x + 40, $y + 120, -1, -1)
+$y += 25
+$chkSmartZapSaveHeroes2 = GUICtrlCreateCheckbox(GetTranslatedFileIni("sam m0d", 5, "TH snipe NoZap if Heroes Deployed"), $x + 40, $y, -1, -1)
 	$sTxtTip = "This will stop SmartZap from zapping a base on a Town Hall Snipe " & @CRLF & _
 			  "if your heroes were deployed. " & @CRLF & @CRLF & _
 			  "This protects their health so they will be ready for battle sooner!"
@@ -68,40 +108,29 @@ $chkSmartZapSaveHeroes2 = GUICtrlCreateCheckbox(GetTranslatedFileIni("sam m0d", 
 	GUICtrlSetOnEvent(-1, "chkSmartZapSaveHeroes2")
 	GUICtrlSetState(-1, $GUI_CHECKED)
 
-$y += 20
-
-$chkSmartZapRnd = GUICtrlCreateCheckbox(GetTranslatedFileIni("sam m0d", 6, "Random Zap Drills Position"), $x + 40, $y + 145, -1, -1)
+$y += 30
+$chkSmartZapRnd = GUICtrlCreateCheckbox(GetTranslatedFileIni("sam m0d", 6, "Random Zap Drills Position"), $x + 40, $y, -1, -1)
 	$sTxtTip = "Random Drop On Drill Area, More Human Like."
 	_GUICtrlSetTip(-1, $sTxtTip)
 	GUICtrlSetOnEvent(-1, "chkSmartZapRnd")
 	GUICtrlSetState(-1, $GUI_CHECKED)
 
-$chkDrillExistBeforeZap = GUICtrlCreateCheckbox(GetTranslatedFileIni("sam m0d", 7, "Check Drill exist before do second or third zap"), $x + 40, $y + 170, -1, -1)
+$y += 25
+$chkDrillExistBeforeZap = GUICtrlCreateCheckbox(GetTranslatedFileIni("sam m0d", 7, "Check Drill exist before do second or third zap"), $x + 40, $y, -1, -1)
 	$sTxtTip = "Prevent zap on damaged drill."
 	_GUICtrlSetTip(-1, $sTxtTip)
 	GUICtrlSetOnEvent(-1, "chkDrillExistBeforeZap")
 	GUICtrlSetState(-1, $GUI_CHECKED)
 
-$chkPreventTripleZap = GUICtrlCreateCheckbox(GetTranslatedFileIni("sam m0d", 8, "Prevent triple zap on same drill"), $x + 40, $y + 195, -1, -1)
+$y += 25
+$chkPreventTripleZap = GUICtrlCreateCheckbox(GetTranslatedFileIni("sam m0d", 8, "Prevent triple zap on same drill"), $x + 40, $y, -1, -1)
 	$sTxtTip = "Prevent triple zap on same drill. Normally wouldnot get much DE on third zap."
 	_GUICtrlSetTip(-1, $sTxtTip)
 	GUICtrlSetOnEvent(-1, "chkPreventTripleZap")
 	GUICtrlSetState(-1, $GUI_CHECKED)
 
-
-$lblMinDEGetFromDrill = GUICtrlCreateLabel(GetTranslatedFileIni("sam m0d", 9, "Min. DE from each Drill:"), $x + 30, $y + 220, 160, -1, $SS_RIGHT)
-
-$txtMinDEGetFromDrill = GUICtrlCreateInput("120", $x + 195, $y + 220, 35, 20, BitOR($GUI_SS_DEFAULT_INPUT, $ES_CENTER, $ES_NUMBER))
-	$sTxtTip = "After perform zap will check how many DE gain from this drill," & @CRLF & _
-			  "If the value lower than this setting, this drill will be ignore for zap again."
-	_GUICtrlSetTip(-1, $sTxtTip)
-	GUICtrlSetLimit(-1, 4)
-	GUICtrlSetOnEvent(-1, "txtMinDEGetFromDrill")
-
-
 $x += 220
-$y += 40
-
+$y = 70
 GUICtrlCreateIcon($g_sLibIconPath, $eIcnDark, $x + 160, $y, 24, 24)
 $lblMySmartZap = GUICtrlCreateLabel("0", $x + 60, $y, 80, 30, $SS_RIGHT)
 	GUICtrlSetFont(-1, 16, $FW_BOLD, Default, "arial", $CLEARTYPE_QUALITY)
@@ -109,8 +138,9 @@ $lblMySmartZap = GUICtrlCreateLabel("0", $x + 60, $y, 80, 30, $SS_RIGHT)
 	$sTxtTip = "Number of dark elixir zapped during the attack with lightning."
 	_GUICtrlSetTip(-1, $sTxtTip)
 
-GUICtrlCreateIcon($g_sLibIconPath, $eIcnLightSpell, $x + 160, $y + 40, 24, 24)
-$lblMyLightningUsed = GUICtrlCreateLabel("0", $x + 60, $y + 40, 80, 30, $SS_RIGHT)
+$y += 35
+GUICtrlCreateIcon($g_sLibIconPath, $eIcnLightSpell, $x + 160, $y, 24, 24)
+$lblMyLightningUsed = GUICtrlCreateLabel("0", $x + 60, $y, 80, 30, $SS_RIGHT)
 	GUICtrlSetFont(-1, 16, $FW_BOLD, Default, "arial", $CLEARTYPE_QUALITY)
 	GUICtrlSetColor(-1, 0x279B61)
 	$sTxtTip = "Amount of used spells."
