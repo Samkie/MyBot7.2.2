@@ -926,7 +926,7 @@ Func DonateSpellType(Const $iSpellIndex, $Quant = 0, Const $Custom = False, Cons
 	Local $Slot = -1, $detectedSlot = -1
 	Local $YComp = 0, $donaterow = -1
 	Local $donateposinrow = -1
-	;Local $sTextToAll = ""
+	Local $sTextToAll = ""
 
 	If $g_iTotalDonateSpellCapacity = 0 Then Return
 	If $g_iDebugSetlog = 1 Then Setlog("DonateSpellType Start: " & $g_asSpellNames[$iSpellIndex], $COLOR_DEBUG)
@@ -972,9 +972,9 @@ Func DonateSpellType(Const $iSpellIndex, $Quant = 0, Const $Custom = False, Cons
 			_ColorCheck(_GetPixelColor(355 + ($Slot * 68), $g_iDonationWindowY + 106 + $YComp, True), Hex(0x6038B0, 6), 20) Or _
 			_ColorCheck(_GetPixelColor(360 + ($Slot * 68), $g_iDonationWindowY + 107 + $YComp, True), Hex(0x6038B0, 6), 20) Then ; check for 'purple'
 
-		;If $bDonateAll Then $sTextToAll = " (to all requests)"
+		If $bDonateAll Then $sTextToAll = " (to all requests)"
 		;SetLog("Else Spell Colors Conditions Matched ALSO", $COLOR_ORANGE)
-		;SetLog("Donating " & $g_iDonSpellsQuantity & " " & $g_asSpellNames[$iSpellIndex] & $sTextToAll, $COLOR_GREEN)
+		SetLog("Donating " & $g_iDonSpellsQuantity & " " & $g_asSpellNames[$iSpellIndex] & $sTextToAll, $COLOR_GREEN)
 		;Setlog("click donate")
 		If $g_iDebugOCRdonate = 1 Then
 			Setlog("donate", $COLOR_ERROR)
