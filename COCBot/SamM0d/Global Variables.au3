@@ -275,7 +275,7 @@ Global $bChangeNextAcc = True
 Global $ichkEnableContinueStay, $chkEnableContinueStay, $itxtTrainTimeLeft, $txtTrainTimeLeft, $ichkForcePreTrainB4Switch, $chkForcePreTrainB4Switch
 Global $ichkSwitchDonTypeOnlyWhenAtkTypeNotReady = False
 Global $bAvoidSwitch = False
-Global $bNowWaitingConfirm = False
+;Global $bNowWaitingConfirm = False
 
 Global $aSwitchList[1][8]
 

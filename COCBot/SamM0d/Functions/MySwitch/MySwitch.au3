@@ -94,7 +94,7 @@ Func SelectGoogleAccount($iSlot)
 	Local $iResult
 	$iResult = DoLoadVillage()
 
-	$bNowWaitingConfirm =False
+;	$bNowWaitingConfirm =False
 
 	If $iResult <> 1 And $iResult <> 2 Then Return False
 
@@ -119,7 +119,7 @@ EndFunc
 Func DoLoadVillage()
 	Local $iCount = 0
 	$iCount = 0
-	$bNowWaitingConfirm = True
+;	$bNowWaitingConfirm = True
 	While Not _CheckColorPixel($aButtonVillageLoad[4], $aButtonVillageLoad[5], $aButtonVillageLoad[6], $aButtonVillageLoad[7])
 		If $g_iSamM0dDebug = 1 Then SetLog("village load button Color: " & _GetPixelColor(160, 380,True))
 		$iCount += 1
@@ -590,7 +590,7 @@ Func DoVillageLoadSucess($iAcc)
 	$g_bRestart = False
 	$bDonateAwayFlag = False
 	$bJustMakeDonate = False
-	$bNowWaitingConfirm = False
+	;$bNowWaitingConfirm = False
 
 	$iDonatedUnit = 0
 	$iTimeForLastShareFriendlyChallenge = 0
@@ -1254,10 +1254,10 @@ EndFunc
 
 Func Wait4Main($bBuilderBase = False)
 	Local $iCount
-
-	For $i = 0 To 105 ;105*2000 = 3.5 Minutes
+	For $i = 0 To 60 ;35*2000 = 2 Minutes
 		$iCount += 1
 		If $g_iSamM0dDebug = 1 Then Setlog("Wait4Main Loop = " & $i & "   ExitLoop = " & $iCount, $COLOR_DEBUG) ; Debug stuck loop
+		ForceCaptureRegion()
 		_CaptureRegion()
 		If _CheckColorPixel($aIsMain[0], $aIsMain[1], $aIsMain[2], $aIsMain[3], $g_bNoCapturePixel) Then
 			If $g_iSamM0dDebug = 1 Then Setlog("Main Village - Screen cleared, WaitMainScreen exit", $COLOR_DEBUG)
@@ -1273,14 +1273,14 @@ Func Wait4Main($bBuilderBase = False)
 			Return True
 		Else
 			If TestCapture() = False And _Sleep($DELAYWAITMAINSCREEN1) Then Return
-;~ 			If _ColorCheck(_GetPixelColor(402, 516, $g_bNoCapturePixel), Hex(0xFFFFFF, 6), 5) And _ColorCheck(_GetPixelColor(405, 537, $g_bNoCapturePixel), Hex(0x5EAC10, 6), 20) Then
-;~ 				Click($aButtonVillageWasAttackOK[0],$aButtonVillageWasAttackOK[1],1,0,"#VWAO")
-;~ 				If _Sleep(1000) Then Return True
-;~ 				;Return True ;  village was attacked okay button
-;~ 			EndIf
+			If _ColorCheck(_GetPixelColor(402, 516, $g_bNoCapturePixel), Hex(0xFFFFFF, 6), 5) And _ColorCheck(_GetPixelColor(405, 537, $g_bNoCapturePixel), Hex(0x5EAC10, 6), 20) Then
+				Click($aButtonVillageWasAttackOK[0],$aButtonVillageWasAttackOK[1],1,0,"#VWAO")
+				If _Sleep(1000) Then Return True
+				;Return True ;  village was attacked okay button
+			EndIf
 			If checkObstacles() Then $i = 0
 		EndIf
-		If ($i > 105) Or ($iCount > 120) Then ExitLoop ; If CheckObstacles forces reset, limit total time to 4 minutes
+		If ($i > 60) Or ($iCount > 90) Then ExitLoop ; If CheckObstacles forces reset, limit total time to 3 minutes
 	Next
 	Return False
 EndFunc

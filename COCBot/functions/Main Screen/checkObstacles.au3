@@ -196,23 +196,30 @@ Func _checkObstacles() ;Checks if something is in the way for mainscreen
 		Return False
 	EndIf
 
-	If _ColorCheck(_GetPixelColor(402, 516, $g_bNoCapturePixel), Hex(0xFFFFFF, 6), 5) And _ColorCheck(_GetPixelColor(405, 537, $g_bNoCapturePixel), Hex(0x5EAC10, 6), 20) Then
-		Click($aButtonVillageWasAttackOK[0],$aButtonVillageWasAttackOK[1],1,0,"#VWAO")
-		$g_bMinorObstacle = True
-		If _Sleep(1000) Then Return False
-		Return False
-		;Return True ;  village was attacked okay button
-	EndIf
-
-	If $bNowWaitingConfirm = False Then
+	;If $bNowWaitingConfirm = False Then
 		If _ColorCheck(_GetPixelColor($aButtonVillageCancel[4], $aButtonVillageCancel[5],$g_bNoCapturePixel), Hex($aButtonVillageCancel[6], 6), $aButtonVillageCancel[7]) And _
 			_ColorCheck(_GetPixelColor($aButtonVillageLoad[4], $aButtonVillageLoad[5],$g_bNoCapturePixel), Hex($aButtonVillageLoad[6], 6), $aButtonVillageLoad[7]) Then
-			Click($aButtonVillageCancel[0],$aButtonVillageCancel[1],1,0,"#VL01")
+			If $ichkProfileImage = 1 Then
+				Local $iResult
+				$iResult = DoLoadVillage()
+				If $iResult <> 1 And $iResult <> 2 Then Return False
+				If _Sleep(500) Then Return False
+				If $g_iSamM0dDebug = 1 Then SetLog("$iResult: " & $iResult)
+				If _Sleep(5) Then Return False
+				If $iResult = 1 Then
+					If DoConfirmVillage() = False Then Return False
+				Else
+					ClickP($aAway,1,0)
+				EndIf
+				Wait4Main()
+			Else
+				Click($aButtonVillageCancel[0],$aButtonVillageCancel[1],1,0,"#VL01")
+			EndIf
 			$g_bMinorObstacle = True
 			If _Sleep(500) Then Return False
 			Return False
 		EndIf
-	EndIf
+	;EndIf
 
 	; prevent close train page failed, and get builder failed
 	If _CheckPixel($aIsTrainPgChk1, $g_bNoCapturePixel) Then
