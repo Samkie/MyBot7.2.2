@@ -586,6 +586,10 @@ EndFunc
 ;~ 	EndIf
 ;~ EndFunc
 
+Func chkDisablePauseTrayTip()
+	$ichkDisablePauseTrayTip = (GUICtrlRead($chkDisablePauseTrayTip) = $GUI_CHECKED ? 1 : 0)
+EndFunc
+
 Func chkEnableLogoutLimit()
 	$ichkEnableLogoutLimit = (GUICtrlRead($chkEnableLogoutLimit) = $GUI_CHECKED ? 1 : 0)
 	GUICtrlSetState($txtLogoutLimitTime, ($ichkEnableLogoutLimit = 1 ? $GUI_ENABLE : $GUI_DISABLE))

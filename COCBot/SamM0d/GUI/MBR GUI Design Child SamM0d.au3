@@ -812,6 +812,12 @@ $chkAutoMinimizeBot = GUICtrlCreateCheckbox(GetTranslatedFileIni("sam m0d", "Aut
 	GUICtrlSetOnEvent(-1, "chkAutoMinimizeBot")
 	GUICtrlSetState(-1, $GUI_UNCHECKED)
 
+$x = 10
+$y += 25
+$chkDisablePauseTrayTip = GUICtrlCreateCheckbox(GetTranslatedFileIni("sam m0d", "Disable balloon tip while press pause", "Disable balloon tip while press pause."), $x+10, $y, -1, -1)
+	GUICtrlSetOnEvent(-1, "chkDisablePauseTrayTip")
+	GUICtrlSetState(-1, $GUI_UNCHECKED)
+
 ;~ $x = 10
 ;~ $y += 25
 ;~ $chkEnableADBClick = GUICtrlCreateCheckbox(GetTranslatedFileIni("sam m0d", "Enable ADB click", "Enable ADB click"), $x+10, $y, -1, -1)

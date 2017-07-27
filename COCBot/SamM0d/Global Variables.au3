@@ -72,6 +72,9 @@ Global $g_bFlagHideEmulator = False
 Global $g_bChkAutoMinimizeBot = False
 Global $g_bFlagMinimizeBot = False
 
+; pause tray tip
+Global $chkDisablePauseTrayTip, $ichkDisablePauseTrayTip
+
 ; unit wave factor
 Global $ichkUnitFactor
 Global $itxtUnitFactor
