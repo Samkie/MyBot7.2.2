@@ -246,9 +246,10 @@ Func SmartWait4Train()
 
 	$iTrainWaitTime = $iTrainWaitTime * 60 ; convert $iTrainWaitTime to seconds instead of minutes returned from OCR
 
+	; samm0d - max log out
 	If $ichkEnableLogoutLimit = 1 Then
 		If $iTrainWaitTime > $itxtLogoutLimitTime Then
-			Setlog("Activated Max logout time: " & $iTrainWaitTime & " to " & $itxtLogoutLimitTime & " seconds", $COLOR_INFO)
+			Setlog("Activated Max logout time: " & Floor($iTrainWaitTime) & " to " & $itxtLogoutLimitTime & " seconds", $COLOR_INFO)
 			$iTrainWaitTime = $itxtLogoutLimitTime
 		EndIf
 	EndIf
