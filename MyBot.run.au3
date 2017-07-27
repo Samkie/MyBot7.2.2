@@ -124,6 +124,9 @@ Func InitializeBot()
 
 	InitAndroidConfig()
 
+	; samm0d - always enable debug mode
+	$g_bDevMode = True
+
 	If FileExists(@ScriptDir & "\EnableMBRDebug.txt") Then  ; Set developer mode
 		$g_bDevMode = True
 		Local $aText = FileReadToArray(@ScriptDir & "\EnableMBRDebug.txt") ; check if special debug flags set inside EnableMBRDebug.txt file

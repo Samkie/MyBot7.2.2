@@ -172,19 +172,20 @@ Func DoConfirmVillage()
 EndFunc
 
 Func buildSwitchList()
-	Local $OldSwitchList[1][7]
+	Local $OldSwitchList[1][8]
 	Local $iCount = 0
 
-	ReDim $OldSwitchList[UBound($aSwitchList)][7]
+	ReDim $OldSwitchList[UBound($aSwitchList)][8]
 	$OldSwitchList = $aSwitchList
 
-	ReDim $aSwitchList[$iCount + 1][7]
+	ReDim $aSwitchList[$iCount + 1][8]
 	$aSwitchList[$iCount][0] = 0
 	$aSwitchList[$iCount][1] = 0
 	$aSwitchList[$iCount][2] = 0
 	$aSwitchList[$iCount][4] = 0
 	$aSwitchList[$iCount][5] = 0
 	$aSwitchList[$iCount][6] = 0
+	$aSwitchList[$iCount][7] = 0
 	$iTotalDonateType = 0
 
 	For $i = 0 To 7
@@ -209,7 +210,7 @@ Func buildSwitchList()
 					IniWrite(@ScriptDir & "\Profiles\MySwitch.ini", "MySwitch", "CheckVillage", 0)
 				EndIf
 			EndIf
-			ReDim $aSwitchList[$iCount + 1][7]
+			ReDim $aSwitchList[$iCount + 1][8]
 			$aSwitchList[$iCount][0] = _NowCalc() ;initialize army train time with date and time now
 			$aSwitchList[$iCount][1] = TimerInit()
 			$aSwitchList[$iCount][2] = $icmbAtkDon[$i] ; atk or don flag
@@ -217,6 +218,7 @@ Func buildSwitchList()
 			$aSwitchList[$iCount][4] = $i ; account slot
 			$aSwitchList[$iCount][5] = 0
 			$aSwitchList[$iCount][6] = $icmbStayTime[$i] ; stay time (minutes)
+			$aSwitchList[$iCount][7] = $ichkPriority[$i] ;
 			If $icmbAtkDon[$i] = 1 Then
 				$iTotalDonateType += 1
 			EndIf
@@ -245,12 +247,37 @@ Func buildSwitchList()
 	sortSwitchList()
 EndFunc
 
-Func sortSwitchList()
+Func sortSwitchList($bFlagPriority = -1)
 	; sort switch list for make atk type first, donate type last
 	$iSortEnd = -1
 	Local $iMaxCount = UBound($aSwitchList) - 1
+	Local $iPriorityCount = 0
 
-	_ArraySort($aSwitchList,0,0,0,2)
+	If $bFlagPriority <> - 1 Then
+		;_ArrayDisplay($aSwitchList,"Before")
+		For $i = 0 to $iMaxCount
+			For $j = $i + 1 To $iMaxCount
+				If $aSwitchList[$i][7] < $aSwitchList[$j][7] And $aSwitchList[$i][2] = 0 Then
+					_ArraySwap($aSwitchList,$i,$j,False)
+				EndIf
+			Next
+		Next
+
+		;_ArrayDisplay($aSwitchList, "After1")
+		For $i = 0 to $iMaxCount
+			If $aSwitchList[$i][7] = 1 Then
+				$iPriorityCount += 1
+			Else
+				ExitLoop
+			EndIf
+		Next
+		If $iPriorityCount > 1 Then
+			_ArraySort($aSwitchList,0,0,$iPriorityCount-1,2)
+		EndIf
+	EndIf
+
+	;_ArrayDisplay($aSwitchList, "After2 - " & $iPriorityCount)
+	_ArraySort($aSwitchList,0,$iPriorityCount,$iMaxCount,2)
 
 	For $i = 0 to $iMaxCount
 		If $aSwitchList[$i][2] = 1 Then
@@ -261,18 +288,20 @@ Func sortSwitchList()
 
 	If $iSortEnd <> -1 Then
 		If $iSortEnd <> 0 Then
-			_ArraySort($aSwitchList,0,0,$iSortEnd,0)
+			_ArraySort($aSwitchList,0,$iPriorityCount,$iSortEnd,0)
 			If $iSortEnd + 1 < $iMaxCount Then
-				_ArraySort($aSwitchList,0,$iSortEnd + 1,$iMaxCount,0)
+				_ArraySort($aSwitchList,$iPriorityCount,$iSortEnd + 1,$iMaxCount,0)
 			EndIf
 		Else
 			If $iSortEnd + 1 < $iMaxCount Then
-				_ArraySort($aSwitchList,0,$iSortEnd + 1,$iMaxCount,0)
+				_ArraySort($aSwitchList,$iPriorityCount,$iSortEnd + 1,$iMaxCount,0)
 			EndIf
 		EndIf
 	Else
-		_ArraySort($aSwitchList,0,0,0,0)
+		_ArraySort($aSwitchList,0,$iPriorityCount,$iMaxCount,2)
 	EndIf
+
+	;_ArrayDisplay($aSwitchList, "After3")
 EndFunc
 
 Func getNextSwitchList()
@@ -281,6 +310,7 @@ Func getNextSwitchList()
 	Local $iNextAccSlot = $iCurActiveAcc
 	Local $iFirstAtkDonAcc = -1
 	Local $iStayRemain
+	Local $bFlagPriority = -1
 
 	$iMySwitchSmartWaitTime = 0
 	SetLog("Start checking is that any accounts ready for switch.",$COLOR_INFO)
@@ -292,8 +322,11 @@ Func getNextSwitchList()
 		($iDateCalc >= 0 ? "Army getting ready." : "Army getting ready within " & 0 - $iDateCalc & " seconds.") & ($aSwitchList[$i][5] = 1 ? " - PB" : ""),$COLOR_INFO)
 
 		If $iDateCalc >= 0 Then $aSwitchList[$i][5] = 0 ; if current date time over, reset PB flag to enable switch again
-		; early 120 seconds for switch change acc if any attack type account train finish soon
-		If $iDateCalc >= (-120 * $iTotalDonateType) And $aSwitchList[$i][2] = 0 Then $bFlagGotTrainTimeout = True
+		; early 60 seconds for switch change acc if any attack type account train finish soon
+		If $iDateCalc >= (-60 * ($iTotalDonateType + 1)) Then
+			If $aSwitchList[$i][2] = 0 Then $bFlagGotTrainTimeout = True
+			If $bFlagPriority = -1 And $aSwitchList[$i][7] = 1 And ($iNextAccSlot <> $aSwitchList[$i][4]) Then $bFlagPriority = $i
+		EndIf
 		; check the first donate acc
 		If $iFirstAtkDonAcc = -1 Then
 			If $aSwitchList[$i][2] = 1 Then
@@ -346,6 +379,26 @@ Func getNextSwitchList()
 
 	If $g_iSamM0dDebug = 1 Then SetLog("$iNextAccSlot1: " & $iNextAccSlot)
 
+	If $bFlagPriority <> - 1 Then
+		SetLog("Priority Account getting ready soon, switch to Priority Account",$COLOR_INFO)
+		; move priority account to next switch account.
+		For $i = 0 to UBound($aSwitchList) - 1
+			If $aSwitchList[$i][4] = $iNextAccSlot Then
+				If $i > $bFlagPriority Then
+					For $j = $bFlagPriority To $i - 1
+						_ArraySwap($aSwitchList,$j,$j+1,False)
+					Next
+					ExitLoop
+				ElseIf $bFlagPriority > $i Then
+					For $j = $bFlagPriority To $i + 2 Step -1
+						_ArraySwap($aSwitchList,$j,$j-1,False)
+					Next
+					ExitLoop
+				EndIf
+			EndIf
+		Next
+	EndIf
+
 	For $i = 0 to UBound($aSwitchList) - 1
 		If $aSwitchList[$i][4] = $iNextAccSlot Then
 			If $i >= UBound($aSwitchList) - 1 Then
@@ -362,7 +415,7 @@ Func getNextSwitchList()
 	If $g_iSamM0dDebug = 1 Then SetLog("$bFlagDoSortSwitchList: " & $bFlagDoSortSwitchList)
 
 	If $bFlagDoSortSwitchList Or $iCurActiveAcc = -1 Then
-		sortSwitchList()
+		sortSwitchList($bFlagPriority)
 		;$iNextAccSlot = $aSwitchList[0][4]
 		For $i = 0 to UBound($aSwitchList) - 1
 			If $aSwitchList[$i][5] = 0 Then  ; select this profile if not is PB activate

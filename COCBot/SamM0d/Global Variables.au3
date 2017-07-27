@@ -62,6 +62,9 @@ Global $ichkDropCCFirst = 0
 ; Donate not over unit
 Global $ichkEnableLimitDonateUnit, $chkEnableLimitDonateUnit, $itxtLimitDonateUnit, $txtLimitDonateUnit, $iDonatedUnit
 
+; max logout time
+Global $ichkEnableLogoutLimit, $chkEnableLogoutLimit, $itxtLogoutLimitTime, $txtLogoutLimitTime
+
 ; auto hide emulator, minimize bot after start
 Global $chkAutoHideEmulator, $chkAutoMinimizeBot
 Global $g_bChkAutoHideEmulator = False
@@ -235,10 +238,9 @@ Global $btnAttNowDB, $btnAttNowLB
 ; GUI
 Global $g_ahLblStatsSwitchTotal[4]
 Global $g_ahLblStatsSwitchGPH[4]
-Global $cmbSwitchMethod
 Global $grpMySwitch, $chkEnableMySwitch, $chkProfileImage, $g_hLblProfileName, $arrowleft2, $arrowright2, $btnMakeSwitchADBFolder, $cmbSwitchMethod
 ;Global $chkUseADBLoadVillage
-Global $chkEnableAcc[8], $cmbWithProfile[8], $cmbAtkDon[8], $cmbStayTime[8]
+Global $chkEnableAcc[8], $cmbWithProfile[8], $cmbAtkDon[8], $cmbStayTime[8], $chkPriority[8]
 
 ;Global $ichkUseADBLoadVillage = 0
 Global $icmbSwitchMethod = 0
@@ -246,13 +248,7 @@ Global $iSelectAccError = 0
 Global $iTotalDonateType = 0
 Global $iCheckAccProfileError = 0
 Global $iSlotYOffset = 0
-Global $chkProfileImage
-Global $chkEnableMySwitch
 Global $chkUseADBLoadVillage
-Global $chkEnableAcc[8]
-Global $cmbWithProfile[8]
-Global $cmbAtkDon[8]
-Global $cmbStayTime[8]
 Global $lblActiveAcc
 Global $chkCanCloseGame, $txtCanCloseGameTime
 
@@ -261,6 +257,7 @@ Global $ichkEnableAcc[8] = [0,0,0,0,0,0,0,0]
 Global $icmbWithProfile[8] = [0,0,0,0,0,0,0,0]
 Global $icmbAtkDon[8] = [0,0,0,0,0,0,0,0]
 Global $icmbStayTime[8] = [0,0,0,0,0,0,0,0]
+Global $ichkPriority[8] = [0,0,0,0,0,0,0,0]
 
 Global $ichkEnableMySwitch = 0
 Global $ichkCanCloseGame = 1
@@ -277,7 +274,7 @@ Global $ichkSwitchDonTypeOnlyWhenAtkTypeNotReady = False
 Global $bAvoidSwitch = False
 Global $bNowWaitingConfirm = False
 
-Global $aSwitchList[1][7]
+Global $aSwitchList[1][8]
 
 Global $aProfileStats[44][9] = _
 [["g_iFirstAttack",0,0,0,0,0,0,0,0], _

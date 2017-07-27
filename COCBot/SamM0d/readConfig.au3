@@ -25,6 +25,10 @@ IniReadS($iMultiFingerStyle, $g_sProfileConfigPath, "MultiFinger", "Select", "1"
 IniReadS($ichkEnableLimitDonateUnit, $g_sProfileConfigPath, "PreventOverDonate", "Enable", "0", "Int")
 IniReadS($itxtLimitDonateUnit, $g_sProfileConfigPath, "PreventOverDonate", "LimitValue", "8","Int")
 
+; max logout time
+IniReadS($ichkEnableLogoutLimit, $g_sProfileConfigPath, "LogoutLimit", "Enable", "0", "Int")
+IniReadS($itxtLogoutLimitTime, $g_sProfileConfigPath, "LogoutLimit", "LimitValue", "240","Int")
+
 ; Unit Wave Factor
 IniReadS($ichkUnitFactor, $g_sProfileConfigPath, "SetSleep", "EnableUnitFactor", "1", "Int")
 IniReadS($itxtUnitFactor, $g_sProfileConfigPath, "SetSleep", "UnitFactor", "10","Int")
@@ -32,7 +36,7 @@ IniReadS($ichkWaveFactor, $g_sProfileConfigPath, "SetSleep", "EnableWaveFactor",
 IniReadS($itxtWaveFactor, $g_sProfileConfigPath, "SetSleep", "WaveFactor", "100","Int")
 
 ; SmartZap from ChaCalGyn (LunaEclipse) - DEMEN
-IniReadS($ichkUseSamM0dZap, $g_sProfileConfigPath, "Zap", "SamM0dZap", "1","Int")
+IniReadS($ichkUseSamM0dZap, $g_sProfileConfigPath, "SamM0dZap", "SamM0dZap", "1","Int")
 IniReadS($ichkSmartZapDB, $g_sProfileConfigPath, "SmartZap", "ZapDBOnly", "1","Int")
 IniReadS($ichkSmartZapSaveHeroes, $g_sProfileConfigPath, "SmartZap", "THSnipeSaveHeroes", "1","Int")
 IniReadS($itxtMinDE, $g_sProfileConfigPath, "SmartZap", "MinDE", "400","Int")
@@ -138,7 +142,6 @@ For $i = 0 To UBound($MyTroops) - 1
 	$MyTroops[$i][3] =  $MyTroopsSetting[$icmbTroopSetting][$i][0]
 	$MyTroops[$i][1] =  $MyTroopsSetting[$icmbTroopSetting][$i][1]
 Next
-
 
 IniReadS($ichkMySpellsOrder, $g_sProfileConfigPath, "MySpells", "Order", "0","Int")
 IniReadS($ichkEnableDeleteExcessSpells, $g_sProfileConfigPath, "MySpells", "DeleteExcess", "0","Int")

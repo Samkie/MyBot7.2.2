@@ -243,7 +243,15 @@ Func SmartWait4Train()
 		$iTrainWaitTime = $g_iCCRemainTime ; Set wait time based on time remaining in CC request to ensure CC is full
 	EndIf
 
+
 	$iTrainWaitTime = $iTrainWaitTime * 60 ; convert $iTrainWaitTime to seconds instead of minutes returned from OCR
+
+	If $ichkEnableLogoutLimit = 1 Then
+		If $iTrainWaitTime > $itxtLogoutLimitTime Then
+			Setlog("Activated Max logout time: " & $iTrainWaitTime & " to " & $itxtLogoutLimitTime & " seconds", $COLOR_INFO)
+			$iTrainWaitTime = $itxtLogoutLimitTime
+		EndIf
+	EndIf
 
 	$sNowTime = _NowCalc() ; find/store time right now
 	If $g_iDebugSetlogTrain = 1 Or $g_iDebugSetlog = 1 Then Setlog("Train end time: " & _DateAdd("s", Int($iTrainWaitTime), $sNowTime), $COLOR_DEBUG)

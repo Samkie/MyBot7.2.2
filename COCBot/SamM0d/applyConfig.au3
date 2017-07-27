@@ -16,6 +16,12 @@
 ; prevent over donate
 GUICtrlSetState($chkEnableLimitDonateUnit, ($ichkEnableLimitDonateUnit = 1 ? $GUI_CHECKED : $GUI_UNCHECKED))
 GUICtrlSetData($txtLimitDonateUnit, $itxtLimitDonateUnit)
+chkEnableLimitDonateUnit()
+
+; max logout time
+GUICtrlSetState($chkEnableLogoutLimit, ($ichkEnableLogoutLimit = 1 ? $GUI_CHECKED : $GUI_UNCHECKED))
+GUICtrlSetData($txtLogoutLimitTime, $itxtLogoutLimitTime)
+chkEnableLogoutLimit()
 
 ; Unit Wave Factor
 GUICtrlSetState($chkUnitFactor, ($ichkUnitFactor = 1 ? $GUI_CHECKED : $GUI_UNCHECKED))

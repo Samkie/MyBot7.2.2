@@ -586,12 +586,18 @@ EndFunc
 ;~ 	EndIf
 ;~ EndFunc
 
+Func chkEnableLogoutLimit()
+	$ichkEnableLogoutLimit = (GUICtrlRead($chkEnableLogoutLimit) = $GUI_CHECKED ? 1 : 0)
+	GUICtrlSetState($txtLogoutLimitTime, ($ichkEnableLogoutLimit = 1 ? $GUI_ENABLE : $GUI_DISABLE))
+EndFunc
+
+Func txtLogoutLimitTime()
+	$itxtLogoutLimitTime = GUICtrlRead($txtLogoutLimitTime)
+EndFunc
+
 Func chkEnableLimitDonateUnit()
-	If GUICtrlRead($chkEnableLimitDonateUnit) = $GUI_CHECKED Then
-		$ichkEnableLimitDonateUnit = 1
-	Else
-		$ichkEnableLimitDonateUnit = 0
-	EndIf
+	$ichkEnableLimitDonateUnit = (GUICtrlRead($chkEnableLimitDonateUnit) = $GUI_CHECKED ? 1 : 0)
+	GUICtrlSetState($txtLimitDonateUnit, ($ichkEnableLimitDonateUnit = 1 ? $GUI_ENABLE : $GUI_DISABLE))
 EndFunc
 
 Func txtLimitDonateUnit()

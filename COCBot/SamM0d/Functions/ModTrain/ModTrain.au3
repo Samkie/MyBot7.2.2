@@ -114,14 +114,17 @@ Func ModTrain($ForcePreTrain = False)
 			getArmySpellTime()
 			$iKTime[3] = $g_aiTimeTrain[1]
 		EndIf
-		_ArraySort($iKTime,1)
+
+		;_ArraySort($iKTime,1)
+		Local $iMaxV =  _ArrayMax($iKTime, 1)
 
 		Local $bIsAttackType = False
 
 		If $iCurActiveAcc <> -1 Then
 			For $i = 0 To UBound($aSwitchList) - 1
 				If $aSwitchList[$i][4] = $iCurActiveAcc Then
-					$aSwitchList[$i][0] = _DateAdd('n', $iKTime[0], _NowCalc())
+					;$aSwitchList[$i][0] = _DateAdd('n', $iKTime[0], _NowCalc())
+					$aSwitchList[$i][0] = _DateAdd('n', $iMaxV, _NowCalc())
 					If $aSwitchList[$i][2] <> 1 Then
 						$bIsAttackType = True
 					EndIf
@@ -133,13 +136,14 @@ Func ModTrain($ForcePreTrain = False)
 		If $ichkEnableContinueStay = 1 Then
 			If $bIsAttackType Then
 				If $g_iSamM0dDebug = 1 Then SetLog("$itxtTrainTimeLeft: " & $itxtTrainTimeLeft)
-				If $g_iSamM0dDebug = 1 Then SetLog("$iKTime[0]: " & $iKTime[0])
+				;If $g_iSamM0dDebug = 1 Then SetLog("$iKTime[0]: " & $iKTime[0])
+				If $g_iSamM0dDebug = 1 Then SetLog("$iMaxV: " & $iMaxV)
 				If $g_iSamM0dDebug = 1 Then SetLog("Before $bAvoidSwitch: " & $bAvoidSwitch)
 				$bAvoidSwitch = False
-				If $iKTime[0] <= 0 Then
+				If $iMaxV <= 0 Then
 					$bAvoidSwitch = True
 				Else
-					If $itxtTrainTimeLeft >= $iKTime[0] Then
+					If $itxtTrainTimeLeft >= $iMaxV Then
 						$bAvoidSwitch = True
 					EndIf
 				EndIf

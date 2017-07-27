@@ -31,10 +31,6 @@ Func saveConfig()
 	SaveRegularConfig()
 	;SetDebugLog("SaveRegularConfig(), time = " & Round(__TimerDiff($t)/1000, 2) & " sec")
 
-	;===========SamM0d Config=======================
-	#include "..\..\SamM0d\saveConfig.au3"
-	;==============End SamM0D Config================
-
 	SetDebugLog("SaveConfig(), time = " & Round(__TimerDiff($t) / 1000, 2) & " sec")
 EndFunc   ;==>saveConfig
 
@@ -225,6 +221,11 @@ Func SaveRegularConfig()
 	; <<< nothing here >>>
 
 	;SetDebugLog("saveConfig: Wrote " & $g_iIniLineCount & " ini lines.")
+
+	;===========SamM0d Config=======================
+	#include "..\..\SamM0d\saveConfig.au3"
+	;==============End SamM0D Config================
+
 	_Ini_Save($g_sProfileConfigPath)
 EndFunc   ;==>SaveRegularConfig
 

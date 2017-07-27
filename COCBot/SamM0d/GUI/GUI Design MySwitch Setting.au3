@@ -10,8 +10,8 @@ $chkEnableMySwitch = GUICtrlCreateCheckbox(GetTranslatedFileIni("sam m0d", 26, "
 	GUICtrlSetState(-1,$GUI_DISABLE)
 
 
-GUICtrlCreateLabel(GetTranslatedFileIni("sam m0d", "Switch method label", "Switch Method: "), $x + 190, $y + 20, -1, -1, $SS_RIGHT)
-$cmbSwitchMethod = GUICtrlCreateCombo("", $x + 280 , $y + 15, 100, 18, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
+GUICtrlCreateLabel(GetTranslatedFileIni("sam m0d", "Switch method label", "Switch Method: "), $x + 180, $y + 20, 100, -1, $SS_RIGHT)
+$cmbSwitchMethod = GUICtrlCreateCombo("", $x + 300 , $y + 15, 100, 18, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
 	_GUICtrlSetTip(-1, GetTranslatedFileIni("sam m0d", "Switch method", "Google: build in google switch; Shared_Prefs: Use ADB replace the shared_prefs file to emulator; Game Client: just logout game and changing coc game client base on profile."))
 	GUICtrlSetData(-1, "Google|Shared_Prefs|Game Client","Google")
 	GUICtrlSetState(-1, $GUI_SHOW)
@@ -23,15 +23,18 @@ $y += 45
 For $i = 0 To 7
 	$chkEnableAcc[$i] = GUICtrlCreateCheckbox(GetTranslatedFileIni("sam m0d", 27 + $i, "Google Account slot " & $i + 1 & " with profile: "), $x, $y, -1, -1)
 		GUICtrlSetOnEvent(-1, "SelectAccForSwitch")
-	$cmbWithProfile[$i] = GUICtrlCreateCombo("", $x + 195, $y + 1, 120, 18, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
+	$cmbWithProfile[$i] = GUICtrlCreateCombo("", $x + 185, $y + 1, 110, 18, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
 		GUICtrlSetOnEvent(-1, "chkEnableAcc")
-	$cmbAtkDon[$i] = GUICtrlCreateCombo("", $x + 320, $y + 1, 60, 18, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
+	$cmbAtkDon[$i] = GUICtrlCreateCombo("", $x + 300, $y + 1, 58, 18, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
 		GUICtrlSetData(-1, GetTranslatedFileIni("sam m0d", "SwitchTypeAttack", "Attack") & "|" & GetTranslatedFileIni("sam m0d", "SwitchTypeDonate", "Donate"), GetTranslatedFileIni("sam m0d", "SwitchTypeAttack", "Attack"))
 		GUICtrlSetOnEvent(-1, "chkEnableAcc")
-	$cmbStayTime[$i] = GUICtrlCreateCombo("", $x + 385, $y + 1, 40, 18, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
+	$cmbStayTime[$i] = GUICtrlCreateCombo("", $x + 363, $y + 1, 38, 18, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
 		GUICtrlSetData(-1, "0|5|10|15|30","0")
-		_GUICtrlSetTip(-1, "Setting for Stay how long (minutes) with this account.")
+		_GUICtrlSetTip(-1, GetTranslatedFileIni("sam m0d", "Setting for Stay how long (minutes) with this account.", "Setting for Stay how long (minutes) with this account."))
 		GUICtrlSetOnEvent(-1, "chkEnableAcc")
+	$chkPriority[$i] = GUICtrlCreateCheckbox(" ", $x + 405, $y + 1, -1, -1)
+	_GUICtrlSetTip(-1, GetTranslatedFileIni("sam m0d", "High Priority", "High Priority - Always switch to this account when troops ready."))
+	GUICtrlSetOnEvent(-1, "chkEnableAcc")
 	$y += 23
 Next
 

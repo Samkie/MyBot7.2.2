@@ -793,10 +793,20 @@ $chkEnableLimitDonateUnit = GUICtrlCreateCheckbox(GetTranslatedFileIni("sam m0d"
 _GUICtrlSetTip(-1, GetTranslatedFileIni("sam m0d", "DonateLimitTips", "Prevent over donate the unit you are train for and mess up the troops queue"))
 	GUICtrlSetOnEvent(-1, "chkEnableLimitDonateUnit")
 
-$txtLimitDonateUnit = GUICtrlCreateInput("8", $x + 280, $y+2, 35, 20, BitOR($GUI_SS_DEFAULT_INPUT, $ES_CENTER, $ES_NUMBER))
+$txtLimitDonateUnit = GUICtrlCreateInput("8", $x + 300, $y+2, 35, 20, BitOR($GUI_SS_DEFAULT_INPUT, $ES_CENTER, $ES_NUMBER))
 	_GUICtrlSetTip(-1, GetTranslatedFileIni("sam m0d", "DonateLimitValue", "Please enter the unit number for limited each round of troops donate."))
 	GUICtrlSetLimit(-1, 2)
 	GUICtrlSetOnEvent(-1, "txtLimitDonateUnit")
+
+$y += 25
+$chkEnableLogoutLimit = GUICtrlCreateCheckbox(GetTranslatedFileIni("sam m0d", "LogoutLimit", "Maximum logout time for smart wait for train, second(s): "), $x+10, $y, -1, -1)
+_GUICtrlSetTip(-1, GetTranslatedFileIni("sam m0d", "LogoutLimitTips", "Maximum logout time for smart wait for train, prevent attack by other player."))
+	GUICtrlSetOnEvent(-1, "chkEnableLogoutLimit")
+
+$txtLogoutLimitTime = GUICtrlCreateInput("8", $x + 300, $y+2, 35, 20, BitOR($GUI_SS_DEFAULT_INPUT, $ES_CENTER, $ES_NUMBER))
+	_GUICtrlSetTip(-1, GetTranslatedFileIni("sam m0d", "LogoutLimitTime", "Please enter how many seconds for maximum logout time."))
+	GUICtrlSetLimit(-1, 2)
+	GUICtrlSetOnEvent(-1, "txtLogoutLimitTime")
 
 ;~ $y += 25
 ;~ $chkRemoveSpecialObstacleBB = GUICtrlCreateCheckbox(GetTranslatedFileIni("sam m0d", "Remove Special Obstacle BB", "Remove Special Obstacle at Builder Base"), $x+10, $y, -1, -1)
@@ -806,47 +816,6 @@ $txtLimitDonateUnit = GUICtrlCreateInput("8", $x + 280, $y+2, 35, 20, BitOR($GUI
 GUICtrlCreateGroup("", -99, -99, 1, 1)
 
 
-
-;~ $tabMyTroops = GUICtrlCreateTabItem("My Troops")
-;~ Local $sComboData= ""
-;~ Local $aTroopOrderList[20] = ["","1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19"]
-;~ For $j = 0 To 19
-;~ 	$sComboData &= $aTroopOrderList[$j] & "|"
-;~ Next
-
-;~ Local $x = 10, $y = 30
-;~ $grpOtherTroops = GUICtrlCreateGroup("My Troops", $x, $y, 430, 360)
-;~ $chkMyTroopsOrder = GUICtrlCreateCheckbox("Order", $x+135, $y+12, -1, -1)
-;~ _GUICtrlSetTip(-1, "Order for ReVamp or Train.")
-;~ GUICtrlSetOnEvent(-1, "$chkMyTroopsOrder")
-
-;~ $x += 10
-;~ $y += 40
-;~ For $i = 0 To UBound($MyTroops) - 1
-;~ 	Assign("icnMy" & $MyTroops[$i][0], GUICtrlCreateIcon ($g_sLibIconPath, $MyTroopsIcon[$i], $x, $y, 24, 24))
-;~ 	Assign("lblMy" & $MyTroops[$i][0], GUICtrlCreateLabel(Eval("sTxt" & StringReplace(NameOfTroop($i,1)," ","")), $x + 26, $y, -1, -1))
-;~ 	Assign("txtMy" & $MyTroops[$i][0], GUICtrlCreateInput("0", $x + 94, $y, 30, -1, BitOR($GUI_SS_DEFAULT_INPUT, $ES_CENTER)))
-;~ 		_GUICtrlSetTip(-1, GetTranslatedFileIni("sam m0d", "txtQty", "Enter the No. of") & " " & Eval("sTxt" & StringReplace(NameOfTroop($i,1)," ","")))
-;~ 		GUICtrlSetLimit(-1, 3)
-;~ 		GUICtrlSetOnEvent(-1, "chkMyTroopOrder")
-;~ 	Assign("cmbMy"& $MyTroops[$i][0] & "Order", GUICtrlCreateCombo("", $x+126, $y, 40, 18, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL)))
-;~ 		GUICtrlSetData(-1, $sComboData, $i + 1)
-;~ 		GUICtrlSetOnEvent(-1, "chkMyTroopOrder")
-;~ 	$y +=25
-;~ 	If $i = 11 Then
-;~ 		$x = 230
-;~ 		$y = 70
-;~ 	EndIf
-;~ Next
-;~ $y +=25
-;~ $lblTotalCapacityOfMyTroops = GUICtrlCreateLabel("Total: 0/0", $x, $y, 100, -1)
-;~ $y +=25
-;~ $btnResetTroops= GUICtrlCreateButton("Reset Troops", $x, $y, 91, 25)
-;~ GUICtrlSetOnEvent(-1, "btnResetTroops")
-;~ $btnResetOrder= GUICtrlCreateButton("Reset Order", $x + 100, $y, 91, 25)
-;~ GUICtrlSetOnEvent(-1, "btnResetOrder")
-
-;~ GUICtrlCreateGroup("", -99, -99, 1, 1)
 GUICtrlCreateTabItem("") ; end tabitem definition
 
 

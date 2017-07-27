@@ -34,7 +34,7 @@ Func applyConfig($bRedrawAtExit = True, $TypeReadSave = "Read") ;Applies the dat
 
 	; <><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
 
-;===========SamM0d Config=======================
+	;===========SamM0d Config=======================
 	#include "..\..\SamM0d\applyConfig.au3"
 	SetComboTroopComp()
 	;==============End SamM0D Config================
