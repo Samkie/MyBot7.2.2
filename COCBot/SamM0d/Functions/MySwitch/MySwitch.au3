@@ -1256,6 +1256,7 @@ Func Wait4Main($bBuilderBase = False)
 	Local $iCount
 	For $i = 0 To 60 ;35*2000 = 2 Minutes
 		$iCount += 1
+		If $iCount > 90 Then ExitLoop ; If _checkObstacles() forces reset, limit total time to 3 minutes
 		If $g_iSamM0dDebug = 1 Then Setlog("Wait4Main Loop = " & $i & "   ExitLoop = " & $iCount, $COLOR_DEBUG) ; Debug stuck loop
 		ForceCaptureRegion()
 		_CaptureRegion()
@@ -1273,14 +1274,16 @@ Func Wait4Main($bBuilderBase = False)
 			Return True
 		Else
 			If TestCapture() = False And _Sleep($DELAYWAITMAINSCREEN1) Then Return
+			; village was attacked okay button
 			If _ColorCheck(_GetPixelColor(402, 516, $g_bNoCapturePixel), Hex(0xFFFFFF, 6), 5) And _ColorCheck(_GetPixelColor(405, 537, $g_bNoCapturePixel), Hex(0x5EAC10, 6), 20) Then
 				Click($aButtonVillageWasAttackOK[0],$aButtonVillageWasAttackOK[1],1,0,"#VWAO")
 				If _Sleep(1000) Then Return True
-				;Return True ;  village was attacked okay button
+				$i = 0
+				ContinueLoop
 			EndIf
-			If checkObstacles() Then $i = 0
+			_CaptureRegion2Sync()
+			If _checkObstacles() Then $i = 0
 		EndIf
-		If ($i > 60) Or ($iCount > 90) Then ExitLoop ; If CheckObstacles forces reset, limit total time to 3 minutes
 	Next
 	Return False
 EndFunc

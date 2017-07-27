@@ -26,6 +26,11 @@ Func checkObstacles() ;Checks if something is in the way for mainscreen
 	If $checkObstaclesActive = True Then Return True
 	Local $wasForce = OcrForceCaptureRegion(False)
 	$checkObstaclesActive = True
+
+	; samm0d
+	_CaptureRegion()
+	_CaptureRegion2Sync() ; share same image from _CaptureRegion()
+
 	Local $Result = _checkObstacles()
 	OcrForceCaptureRegion($wasForce)
 	$checkObstaclesActive = False
@@ -35,9 +40,6 @@ EndFunc   ;==>checkObstacles
 Func _checkObstacles() ;Checks if something is in the way for mainscreen
 	Local $msg, $x, $y, $Result
 	$g_bMinorObstacle = False
-
-	_CaptureRegion()
-	_CaptureRegion2Sync() ; share same image from _CaptureRegion()
 
 	If checkObstacles_Network() Then Return True
 
