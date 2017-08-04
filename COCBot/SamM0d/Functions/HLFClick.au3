@@ -34,7 +34,8 @@ Global $aButtonClose8[9]	= [780, 185              , 835, 250              , 0  ,
 ;~ ; ScreenCoordinates - first 4 values store the region [x1,y1,x2,y2] that can click; values 5,6,7,8 is the color check pixel x,y,color,tolerance level for confirm the button exist if needed.
 Global $aButtonOpenTrainArmy[9]  	  	  = [20 , 540 + $g_iMidOffsetY, 55 , 570 + $g_iMidOffsetY, 50 , 537 + $g_iMidOffsetY, 	0xE1A339, 20, "=-= Open Train Army Page"] ; Main Screen, Army Train Button
 Global $aButtonOpenProfile[9]    	  	  = [28 , 23               , 46 , 46               , 38 , 18               ,    0x10D0F0, 20, "=-= Open Profile Page"] ; Main page, Open Profile Button
-Global $aButtonOpenShieldInfo[9] 	  	  = [430, 7                , 442, 20               , 435, 14               ,    0xE8E8E0, 20, "=-= Open Shield Info Page"] ; main page, open shield info page
+;Global $aButtonOpenShieldInfo[9] 	  	  = [430, 7                , 442, 20               , 435, 14               ,    0xE8E8E0, 20, "=-= Open Shield Info Page"] ; main page, open shield info page
+Global $aButtonOpenShieldInfo[9] 	  	  = [430, 7                , 442, 20               , 436, 14               ,    0xF5F5ED, 6, "=-= Open Shield Info Page"] ; main page, open shield info page
 Global $aButtonOpenLaunchAttack[9] 		  = [30 , 610 + $g_iMidOffsetY, 90 , 670 + $g_iMidOffsetY, 22 , 644 + $g_iMidOffsetY, 	0x9A4916, 30, "=-= Open Launce Attack Page"] ; Main Page, Attack! Button
 
 Global $aButtonClanWindowOpen[9]   	      = [8  , 325 + $g_iMidOffsetY, 28 , 380 + $g_iMidOffsetY, 16 , 380 + $g_iMidOffsetY, 	0xB84408, 20, "=-= Open Chat Window"] ; main page, clan chat Button
