@@ -242,7 +242,8 @@ EndFunc
 
 Func CheckNeedSwipe($TrainTroop)
 	; check need swipe
-	Local $iSwipeNum = 15
+	;Local $iSwipeNum = 15
+	Local $iSwipeNum = 13
 	Local $iCount = 0
 	If $TrainTroop > $iSwipeNum Then
 		$iCount = 0
