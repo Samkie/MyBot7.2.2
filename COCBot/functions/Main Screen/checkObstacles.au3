@@ -38,6 +38,8 @@ Func checkObstacles() ;Checks if something is in the way for mainscreen
 EndFunc   ;==>checkObstacles
 
 Func _checkObstacles() ;Checks if something is in the way for mainscreen
+	If $g_iSamM0dDebug = 1 Then Setlog("_checkObstacles start", $COLOR_DEBUG)
+
 	Local $msg, $x, $y, $Result
 	$g_bMinorObstacle = False
 
@@ -327,6 +329,7 @@ Func _checkObstacles() ;Checks if something is in the way for mainscreen
 		; if black bar at top, e.g. in Android home screen, restart CoC
 		SetDebugLog("checkObstacles: Found Android Screen")
 	EndIf
+	If $g_iSamM0dDebug = 1 Then Setlog("_checkObstacles end", $COLOR_DEBUG)
 	Return False
 EndFunc   ;==>_checkObstacles
 

@@ -58,24 +58,27 @@ Func ModTrain($ForcePreTrain = False)
 		;getArmySpellTime()
 		If _Sleep(50) Then Return
 		; getArmyTroopTime() 读取后会保存造兵时间在变量 $g_aiTimeTrain[0]
-		If $g_aiTimeTrain[0] > $itxtStickToTrainWindow Or $g_aiTimeTrain[0] <= 0 Then
-			ExitLoop
-		Else
-			Local $iStickDelay
-			If $g_aiTimeTrain[0] < 1 Then
-				$iStickDelay = Int($g_aiTimeTrain[0] * 60000)
-			ElseIf $g_aiTimeTrain[0] >= 2 Then
-				$iStickDelay = 60000
+		If $ForcePreTrain = False Then
+			If $g_aiTimeTrain[0] > $itxtStickToTrainWindow Or $g_aiTimeTrain[0] <= 0 Then
+				ExitLoop
 			Else
-				$iStickDelay = 30000
+				Local $iStickDelay
+				If $g_aiTimeTrain[0] < 1 Then
+					$iStickDelay = Int($g_aiTimeTrain[0] * 60000)
+				ElseIf $g_aiTimeTrain[0] >= 2 Then
+					$iStickDelay = 60000
+				Else
+					$iStickDelay = 30000
+				EndIf
+				SetLog($CustomTrain_MSG_2, $COLOR_INFO)
+				If _Sleep($iStickDelay) Then Return
 			EndIf
-			SetLog($CustomTrain_MSG_2, $COLOR_INFO)
-			If _Sleep($iStickDelay) Then Return
+		Else
+			ExitLoop
 		EndIf
 		$iCount += 1
 		If $iCount > (10 + $itxtStickToTrainWindow) Then ExitLoop
 	WEnd
-
 	If $g_iSamM0dDebug = 1 Then SetLog("Before $tempDisableTrain: " & $tempDisableTrain)
  	If $g_iSamM0dDebug = 1 Then SetLog("Before $tempDisableBrewSpell: " & $tempDisableBrewSpell)
 

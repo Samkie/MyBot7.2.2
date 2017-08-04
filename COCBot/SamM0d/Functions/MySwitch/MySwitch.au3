@@ -1261,16 +1261,16 @@ Func Wait4Main($bBuilderBase = False)
 		ForceCaptureRegion()
 		_CaptureRegion()
 		If _CheckColorPixel($aIsMain[0], $aIsMain[1], $aIsMain[2], $aIsMain[3], $g_bNoCapturePixel) Then
-			If $g_iSamM0dDebug = 1 Then Setlog("Main Village - Screen cleared, WaitMainScreen exit", $COLOR_DEBUG)
+			If $g_iSamM0dDebug = 1 Then Setlog("Main Village - Screen cleared, Wait4Main exit", $COLOR_DEBUG)
 			Return True
 		ElseIf _CheckColorPixel($aIsOnBuilderIsland[0], $aIsOnBuilderIsland[1], $aIsOnBuilderIsland[2], $aIsOnBuilderIsland[3], $g_bNoCapturePixel) Then
-			If $g_iSamM0dDebug = 1 Then Setlog("Builder Base - Screen cleared, WaitMainScreen exit", $COLOR_DEBUG)
 			If Not $bBuilderBase Then
 				ZoomOut()
 				SwitchBetweenBases()
 				If $i <> 0 Then $i -= 1
 				ContinueLoop
 			EndIf
+			If $g_iSamM0dDebug = 1 Then Setlog("Builder Base - Screen cleared, Wait4Main exit", $COLOR_DEBUG)
 			Return True
 		Else
 			If TestCapture() = False And _Sleep($DELAYWAITMAINSCREEN1) Then Return
